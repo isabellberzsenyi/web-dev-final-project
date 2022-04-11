@@ -9,24 +9,8 @@ on: # Controls when the action will run.
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 jobs:
-  build-and-test: #
-    # The type of runner that the job will run on
-    runs-on: ubuntu-20.04
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
-        with:
-          node-version: "16"
-      - name: Build and test backend service
-        run: cd server; npm install && nodemon server.js
-
-      - name: Build and test frontend components
-        run: cd frontend; npm install && npm run lint && npm test
   deploy:
     if: github.ref == 'refs/heads/main'
-    needs: build-and-test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
