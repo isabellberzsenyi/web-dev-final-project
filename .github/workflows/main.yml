@@ -11,6 +11,16 @@ on: # Controls when the action will run.
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
+  build-and-test:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: "16"
+      - name: Build and test backend service
+      run: cd services; npm install && nodemon server.js
+
   deploy:
     if: github.ref == 'refs/heads/main'
     needs: build-and-test
