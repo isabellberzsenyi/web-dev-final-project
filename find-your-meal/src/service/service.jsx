@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:4000/';
+const API_URL = process.env.HEROLU_API || 'http://localhost:4000/';
 
 const example = async () => {
   const response = await axios.get(API_URL);
