@@ -6,7 +6,6 @@ function Home() {
   const [apiText, setApiText] = useState();
   const apiExample = async () => {
     await example().then((r) => {
-      console.log('r', r);
       setApiText(r.data);
     });
   };

@@ -12,6 +12,7 @@ module.exports = {
   rules: {
     'jsx-quotes': ['warn', 'prefer-single'],
     'react/jsx-one-expression-per-line': 'off',
+    'no-console': 'off',
   },
   overrides: [
     {
