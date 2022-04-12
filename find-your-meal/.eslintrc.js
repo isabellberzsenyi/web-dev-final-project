@@ -18,6 +18,7 @@ module.exports = {
       files: ['*-test.js', '*.spec.js'],
       rules: {
         'react/jsx-filename-extension': 'off',
+        'no-console': 'off',
       },
     },
   ],
