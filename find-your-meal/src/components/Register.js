@@ -15,27 +15,17 @@ function Register({ setRegister }) {
   return (
     <div>
       <h1>Register</h1>
-      <form
-        style={{
-          textAlign: 'center',
-          marginTop: '2em',
-          border: '2px solid #adafae',
-        }}
-      >
-        <div style={{ width: '80%' }}>
+      <form className='form-container'>
+        <div className='fields-container'>
           <div className='form-group'>
-            <label
-              htmlFor='name'
-              style={{ display: 'flex', marginBottom: '2em', marginTop: '2em' }}
-            >
-              <p style={{ width: '30%' }}>Name:</p>
+            <label htmlFor='name' className='form-field my-4'>
+              <p className='form-label'>Name:</p>
               <input
                 type='text'
-                className='form-control'
+                className='form-control pl-2'
                 id='name'
                 aria-describedby='name help'
                 placeholder='Enter your name'
-                style={{ paddingLeft: '1em' }}
                 onChange={(e) => {
                   setForm({
                     ...form,
@@ -46,14 +36,13 @@ function Register({ setRegister }) {
             </label>
           </div>
           <div className='form-group'>
-            <label htmlFor='email' style={{ display: 'flex', marginBottom: '2em' }}>
-              <p style={{ width: '30%' }}>Email:</p>
+            <label htmlFor='email' className='form-field mb-4'>
+              <p className='form-label'>Email:</p>
               <input
                 type='email'
-                className='form-control'
+                className='form-control pl-2'
                 id='email'
                 placeholder='Enter your email'
-                style={{ paddingLeft: '1em' }}
                 onChange={(e) => {
                   setForm({
                     ...form,
@@ -64,14 +53,13 @@ function Register({ setRegister }) {
             </label>
           </div>
           <div className='form-group'>
-            <label htmlFor='password' style={{ display: 'flex', marginBottom: '2em' }}>
-              <p style={{ width: '30%' }}>Password:</p>
+            <label htmlFor='password' className='form-field mb-4'>
+              <p className='form-label'>Password:</p>
               <input
                 type='password'
-                className='form-control'
+                className='form-control pl-2'
                 id='password'
                 placeholder='Enter your password'
-                style={{ paddingLeft: '1em' }}
                 onChange={(e) => {
                   setForm({
                     ...form,
@@ -81,7 +69,7 @@ function Register({ setRegister }) {
               />
             </label>
           </div>
-          <div style={{ display: 'flex', flexDirection: 'row' }}>
+          <div className='d-flex flex-row'>
             <p style={{ width: '40%' }}>Choose your account type:</p>
             <div className='form-check form-check-inline'>
               <label className='form-check-label' htmlFor='accountTypePro'>
@@ -124,8 +112,7 @@ function Register({ setRegister }) {
         <button
           type='button'
           // type="submit"
-          className='btn btn-primary'
-          style={{ marginBottom: '2em' }}
+          className='btn btn-primary mb-4'
           onClick={onSubmit}
         >
           Submit

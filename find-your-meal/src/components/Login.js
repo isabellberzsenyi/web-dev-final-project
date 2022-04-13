@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Register from './Register';
+import './login.css';
 
 function Login() {
   const [register, setRegister] = useState(false);
@@ -19,27 +20,17 @@ function Login() {
   return (
     <div>
       <h1>Login</h1>
-      <form
-        style={{
-          textAlign: 'center',
-          marginTop: '2em',
-          border: '2px solid #adafae',
-        }}
-      >
-        <div style={{ width: '80%' }}>
+      <form className='form-container'>
+        <div className='fields-container'>
           <div className='form-group'>
-            <label
-              htmlFor='email'
-              style={{ display: 'flex', marginBottom: '2em', marginTop: '2em' }}
-            >
-              <p style={{ width: '30%' }}>Email address</p>
+            <label htmlFor='email' className='form-field my-4'>
+              <p className='form-label'>Email address</p>
               <input
                 type='email'
-                className='form-control'
+                className='form-control pl-2'
                 id='email'
                 aria-describedby='emailHelp'
                 placeholder='Enter email'
-                style={{ paddingLeft: '1em' }}
                 onChange={(e) => {
                   setForm({
                     ...form,
@@ -50,14 +41,13 @@ function Login() {
             </label>
           </div>
           <div className='form-group'>
-            <label htmlFor='exampleInputPassword1' style={{ display: 'flex', marginBottom: '2em' }}>
-              <p style={{ width: '30%' }}>Password</p>
+            <label htmlFor='password' className='form-field mb-4'>
+              <p className='form-label'>Password</p>
               <input
                 type='password'
-                className='form-control'
-                id='exampleInputPassword1'
+                className='form-control pl-2'
+                id='password'
                 placeholder='Password'
-                style={{ paddingLeft: '1em' }}
                 onChange={(e) => {
                   setForm({
                     ...form,
@@ -68,21 +58,11 @@ function Login() {
             </label>
           </div>
         </div>
-        <button
-          type='submit'
-          className='btn btn-primary'
-          style={{ marginBottom: '2em' }}
-          onClick={onSubmit}
-        >
+        <button type='submit' className='btn btn-primary mb-4' onClick={onSubmit}>
           Submit
         </button>
       </form>
-      <button
-        type='button'
-        className='btn btn-link'
-        onClick={() => setRegister(true)}
-        style={{ border: 'none', marginBottom: '2em' }}
-      >
+      <button type='button' className='btn btn-link' onClick={() => setRegister(true)}>
         Not a user? Register now.
       </button>
     </div>
