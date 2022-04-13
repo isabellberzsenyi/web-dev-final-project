@@ -17,6 +17,7 @@ function Home() {
     <>
       <h1>Home Page</h1>
       <Link to='/'>Home</Link>
+      | <Link to='/search'>Search</Link>
       <div>
         <p>from API: {apiText}</p>
       </div>
