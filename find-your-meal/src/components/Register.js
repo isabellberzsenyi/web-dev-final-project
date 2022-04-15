@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 
 function Register({ setRegister }) {
   const [form, setForm] = useState({
-    name: '',
+    firstName: '',
+    lastName: '',
     email: '',
     password: '',
     accountType: '',
@@ -18,18 +19,36 @@ function Register({ setRegister }) {
       <form className='form-container'>
         <div className='fields-container'>
           <div className='form-group'>
-            <label htmlFor='name' className='form-field my-4'>
-              <p className='form-label'>Name:</p>
+            <label htmlFor='firstName' className='form-field my-4'>
+              <p className='form-label'>First Name:</p>
               <input
                 type='text'
                 className='form-control pl-2'
-                id='name'
+                id='firstName'
                 aria-describedby='name help'
-                placeholder='Enter your name'
+                placeholder='Enter your first name'
                 onChange={(e) => {
                   setForm({
                     ...form,
-                    name: e.target.value,
+                    firstName: e.target.value,
+                  });
+                }}
+              />
+            </label>
+          </div>
+          <div className='form-group'>
+            <label htmlFor='lastName' className='form-field my-4'>
+              <p className='form-label'>Last Name:</p>
+              <input
+                type='text'
+                className='form-control pl-2'
+                id='lastName'
+                aria-describedby='name help'
+                placeholder='Enter your last name'
+                onChange={(e) => {
+                  setForm({
+                    ...form,
+                    lastName: e.target.value,
                   });
                 }}
               />
