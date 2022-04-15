@@ -1,26 +1,28 @@
-import React, {useEffect, useRef, useState} from 'react';
-import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
+import React, { useEffect, useRef, useState } from 'react';
+import {
+  Link, useParams,
+} from 'react-router-dom';
 import axios from 'axios';
 
 function Search() {
-  const [meals, setMeals] = useState();
-  const {searchString = useParams();}
+  const [theMeals, setMeals] = useState([]);
+  const { searchString } = useParams();
   const nameRef = useRef();
-  const navigate = useNavigate();
-  const location = useLocation();
-  const API_URL = 'www.themealdb.com/api/json/v1/1/search.php?s';
+  // const navigate = useNavigate();
+  // const location = useLocation();
+  const API_URL = 'https://www.themealdb.com/api/json/v1/1/search.php?s';
   const searchMealByName = async () => {
-   const response = await axios.get(`${API_URL}=${nameRef.current.value}`);
-   setMeals(response.data.Search);
-   navigate(`/search/${nameRef.current.value}`);
+    const response = await axios.get(`${API_URL}=${nameRef.current.value}`);
+    setMeals(response.data.meals);
+    // navigate(`/search/${nameRef.current.value}`);
   };
 
   useEffect(() => {
-    if(searchString) {
+    if (searchString) {
       nameRef.current.value = searchString;
       searchMealByName();
     }
-  }, []);
+  }, [searchString]);
 
   return (
     <>
@@ -42,14 +44,19 @@ function Search() {
       <div>
         <ul className="list-group">
           {
-            meals.map((meal) => (
-            <li className="list-group-item">
-              <Link to={`/details/${meal.mealID}`}>
-                <img src={meal.strMealThumb} height={60} width={60}
-                     className="me-4" alt="" />
-                {meal.strMeal}
-              </Link>
-            </li>
+            theMeals.map((meal) => (
+              <li className="list-group-item" key={meal.idMeal}>
+                <Link to={`/details/${meal.idMeal}`}>
+                  <img
+                    src={meal.strMealThumb}
+                    height={60}
+                    width={60}
+                    className="me-4"
+                    alt=""
+                  />
+                  {meal.strMeal}
+                </Link>
+              </li>
             ))
           }
         </ul>
