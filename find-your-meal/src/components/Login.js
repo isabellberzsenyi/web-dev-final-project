@@ -1,24 +1,23 @@
-import React, { useState } from 'react';
-import Register from './Register';
+import React, { useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
+import NavBar from './NavBar';
 import './login.css';
+import { useProfile } from '../contexts/profile-context';
 
 function Login() {
-  const [register, setRegister] = useState(false);
-  const [form, setForm] = useState({
-    email: '',
-    password: '',
-  });
+  const navigate = useNavigate();
+  const { signin } = useProfile();
+  const emailRef = useRef();
+  const passwordRef = useRef();
 
-  function onSubmit() {
-    console.log({ form });
-  }
-
-  if (register) {
-    return <Register setRegister={setRegister} />;
-  }
+  const onSubmit = async () => {
+    await signin(emailRef.current.value, passwordRef.current.value);
+    navigate('/');
+  };
 
   return (
     <div>
+      <NavBar currentPage='login' />
       <h1>Login</h1>
       <form className='form-container'>
         <div className='fields-container'>
@@ -31,12 +30,7 @@ function Login() {
                 id='email'
                 aria-describedby='emailHelp'
                 placeholder='Enter email'
-                onChange={(e) => {
-                  setForm({
-                    ...form,
-                    email: e.target.value,
-                  });
-                }}
+                ref={emailRef}
               />
             </label>
           </div>
@@ -48,21 +42,16 @@ function Login() {
                 className='form-control pl-2'
                 id='password'
                 placeholder='Password'
-                onChange={(e) => {
-                  setForm({
-                    ...form,
-                    password: e.target.value,
-                  });
-                }}
+                ref={passwordRef}
               />
             </label>
           </div>
         </div>
-        <button type='submit' className='btn btn-primary mb-4' onClick={onSubmit}>
+        <button type='button' className='btn btn-primary mb-4' onClick={onSubmit}>
           Submit
         </button>
       </form>
-      <button type='button' className='btn btn-link' onClick={() => setRegister(true)}>
+      <button type='button' className='btn btn-link' onClick={() => navigate('/signup')}>
         Not a user? Register now.
       </button>
     </div>

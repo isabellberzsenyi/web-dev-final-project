@@ -1,21 +1,32 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useProfile } from '../contexts/profile-context';
+import NavBar from './NavBar';
 
-function Register({ setRegister }) {
-  const [form, setForm] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    password: '',
-    accountType: '',
-  });
+function Register() {
+  const navigate = useNavigate();
+  const { signup } = useProfile();
+  const firstNameRef = useRef();
+  const lastNameRef = useRef();
+  const emailRef = useRef();
+  const passwordRef = useRef();
+  const [accountType, setAccountType] = useState();
 
-  function onSubmit() {
-    console.log({ form });
-  }
+  const onSubmit = async () => {
+    await signup(
+      emailRef.current.value,
+      passwordRef.current.value,
+      firstNameRef.current.value,
+      lastNameRef.current.value,
+      accountType,
+    );
+    navigate('/');
+  };
 
   return (
     <div>
-      <h1>Register</h1>
+      <NavBar currentPage='signup' />
+      <h1>Sign Up</h1>
       <form className='form-container'>
         <div className='fields-container'>
           <div className='form-group'>
@@ -27,12 +38,7 @@ function Register({ setRegister }) {
                 id='firstName'
                 aria-describedby='name help'
                 placeholder='Enter your first name'
-                onChange={(e) => {
-                  setForm({
-                    ...form,
-                    firstName: e.target.value,
-                  });
-                }}
+                ref={firstNameRef}
               />
             </label>
           </div>
@@ -45,12 +51,7 @@ function Register({ setRegister }) {
                 id='lastName'
                 aria-describedby='name help'
                 placeholder='Enter your last name'
-                onChange={(e) => {
-                  setForm({
-                    ...form,
-                    lastName: e.target.value,
-                  });
-                }}
+                ref={lastNameRef}
               />
             </label>
           </div>
@@ -62,12 +63,7 @@ function Register({ setRegister }) {
                 className='form-control pl-2'
                 id='email'
                 placeholder='Enter your email'
-                onChange={(e) => {
-                  setForm({
-                    ...form,
-                    email: e.target.value,
-                  });
-                }}
+                ref={emailRef}
               />
             </label>
           </div>
@@ -79,12 +75,7 @@ function Register({ setRegister }) {
                 className='form-control pl-2'
                 id='password'
                 placeholder='Enter your password'
-                onChange={(e) => {
-                  setForm({
-                    ...form,
-                    password: e.target.value,
-                  });
-                }}
+                ref={passwordRef}
               />
             </label>
           </div>
@@ -99,10 +90,7 @@ function Register({ setRegister }) {
                   id='accountTypePro'
                   value='Pro'
                   onChange={() => {
-                    setForm({
-                      ...form,
-                      accountType: 'pro',
-                    });
+                    setAccountType('pro');
                   }}
                 />
                 Pro
@@ -117,10 +105,7 @@ function Register({ setRegister }) {
                   id='accountTypeBasic'
                   value='Basic'
                   onChange={() => {
-                    setForm({
-                      ...form,
-                      accountType: 'basic',
-                    });
+                    setAccountType('basic');
                   }}
                 />
                 Basic
@@ -128,16 +113,11 @@ function Register({ setRegister }) {
             </div>
           </div>
         </div>
-        <button
-          type='button'
-          // type="submit"
-          className='btn btn-primary mb-4'
-          onClick={onSubmit}
-        >
+        <button type='button' className='btn btn-primary mb-4' onClick={onSubmit}>
           Submit
         </button>
       </form>
-      <button type='button' className='btn btn-link' onClick={() => setRegister(false)}>
+      <button type='button' className='btn btn-link' onClick={() => navigate('/login')}>
         Already have an account? Login.
       </button>
     </div>
