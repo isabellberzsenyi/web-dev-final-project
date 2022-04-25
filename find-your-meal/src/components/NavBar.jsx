@@ -24,7 +24,7 @@ function NavBar({ currentPage }) {
           <Link className={linkClassName('login')} to='/login'>
             Login
           </Link>
-          <Link className={linkClassName('signup')} to='/signup'>
+          <Link className={linkClassName('signup')} to='/register'>
             Sign Up
           </Link>
         </>
