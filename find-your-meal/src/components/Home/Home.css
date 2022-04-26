@@ -10,3 +10,14 @@
   align-items: center;
   justify-content: center;
 }
+
+.card {
+  width: 22%;
+  margin: 5mm;
+  align-items: center;
+}
+
+.card-img {
+  height: 15vw;
+  width: 15vw;
+}
