@@ -1,0 +1,17 @@
+.form-container {
+  text-align: center;
+  margin-top: 2em;
+  border: 2px solid #adafae;
+}
+
+.fields-container {
+  width: 80%;
+}
+
+.form-field {
+  display: flex;
+}
+
+.form-label {
+  width: 30%;
+}
