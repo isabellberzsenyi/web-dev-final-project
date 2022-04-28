@@ -30,6 +30,15 @@ function Details() {
             <h1 className="ms-2">{mealDetails.meals && mealDetails.meals[0].strMeal}</h1>
             <p className="fw-bold text-secondary ms-2">Category: {mealDetails.meals && mealDetails.meals[0].strCategory}  <span className="fst-normal"> |</span> Cuisine: {mealDetails.meals && mealDetails.meals[0].strArea}</p>
           </div>
+          <div className="me-5 mt-2 ms-auto">
+            <ul classNme="list-group">
+              <li className="list-group-item disabled fw-bold text-decoration-underline text-primary bg-dark border border-primary">Ingredients</li>
+              <li className="list-group-item bg-dark border border-primary">{mealDetails.meals && mealDetails.meals[0].strIngredient1}</li>
+              <li className="list-group-item bg-dark border border-primary">{mealDetails.meals && mealDetails.meals[0].strIngredient2}</li>
+              <li className="list-group-item bg-dark border border-primary">{mealDetails.meals && mealDetails.meals[0].strIngredient3}</li>
+              <li className="list-group-item bg-dark border border-primary">{mealDetails.meals && mealDetails.meals[0].strIngredient4}</li>
+            </ul>
+          </div>
         </div>
         <hr className="border-dark ms-5 me-5" style={{ color: 'black' }} />
         <p className="text-black ms-5 me-5 pb-1">{mealDetails.meals && mealDetails.meals[0].strInstructions}</p>

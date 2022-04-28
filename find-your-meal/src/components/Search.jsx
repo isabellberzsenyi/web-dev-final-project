@@ -41,17 +41,29 @@ function Search() {
         <ul className="list-group">
           {
             theMeals.map((meal) => (
-              <li className="list-group-item" key={meal.idMeal}>
-                <Link to={`/details/${meal.idMeal}`}>
-                  <img
-                    src={meal.strMealThumb}
-                    height={60}
-                    width={60}
-                    className="me-4"
-                    alt=""
-                  />
-                  {meal.strMeal}
-                </Link>
+              <li className="list-group-item d-flex justify-content-between" key={meal.idMeal}>
+                <div>
+                  <Link to={`/details/${meal.idMeal}`}>
+                    <img
+                      src={meal.strMealThumb}
+                      height={60}
+                      width={60}
+                      className="me-4"
+                      alt=""
+                    />
+                    {meal.strMeal}
+                  </Link>
+                </div>
+                <div className="ms-3 me-3 flex-sm-fill col-1 text-truncate text-dark align-self-center">
+                  Directions:
+                  <br />
+                  {meal.strInstructions}
+                </div>
+                <div>
+                  <p className="fst-italic text-right">
+                    {meal.strCategory} · {meal.strArea}
+                  </p>
+                </div>
               </li>
             ))
           }
