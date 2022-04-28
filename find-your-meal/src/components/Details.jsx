@@ -28,14 +28,14 @@ function Details() {
           />
           <div>
             <h1 className="ms-2">{mealDetails.meals && mealDetails.meals[0].strMeal}</h1>
-            <p className="fst-italic text-black ms-2">Category: {mealDetails.meals && mealDetails.meals[0].strCategory} <span className="font-weight-normal">|</span> Cuisine: {mealDetails.meals && mealDetails.meals[0].strArea}</p>
+            <p className="fw-bold text-secondary ms-2">Category: {mealDetails.meals && mealDetails.meals[0].strCategory}  <span className="fst-normal"> |</span> Cuisine: {mealDetails.meals && mealDetails.meals[0].strArea}</p>
           </div>
         </div>
-        <hr className="border-dark ms-5 me-5" />
+        <hr className="border-dark ms-5 me-5" style={{ color: 'black' }} />
         <p className="text-black ms-5 me-5 pb-1">{mealDetails.meals && mealDetails.meals[0].strInstructions}</p>
-        <hr className="border-dark ms-5 me-5" />
+        <hr className="border-dark ms-5 me-5" style={{ color: 'black' }} />
         <div>
-          <p className="fst-italic text-decoration-underline text-black ms-5 pb-3">Likes: 342 | Dislikes: 32</p>
+          <p className="fw-bold text-black ms-5 pb-3"><i className="fas fa-heart text-info" /> 342 | <i className="fas fa-heart-broken text-secondary" /> 32</p>
         </div>
       </div>
       <div className="card">
