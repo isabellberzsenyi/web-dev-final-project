@@ -3,6 +3,7 @@ import {
   Link, useParams,
 } from 'react-router-dom';
 import axios from 'axios';
+import NavBar from './NavBar';
 
 function Search() {
   const [theMeals, setMeals] = useState([]);
@@ -26,12 +27,7 @@ function Search() {
 
   return (
     <>
-      <nav className="nav nav-tabs d-flex">
-        <Link className="nav-link p-2" to='/'>Home</Link>
-        <Link className="nav-link active me-auto p-2" to='search'>Search</Link>
-        <Link className="nav-link p-2" to='/'>Login</Link>
-        <Link className="nav-link p-2" to='/'>Sign Up</Link>
-      </nav>
+      <NavBar currentPage='search' />
       <div className="bg-primary">
         <h2 className="ms-2">Search a meal</h2>
         <div className="d-flex flex-row ms-2 me-2 pb-2">

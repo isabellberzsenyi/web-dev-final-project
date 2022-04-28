@@ -1,24 +1,39 @@
-import React from 'react';
-// import axios from 'axios';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import { useParams } from 'react-router-dom';
+import NavBar from './NavBar';
 
 function Details() {
+  const [mealDetails, setMealDetails] = useState({});
+  const API_URL = 'https://www.themealdb.com/api/json/v1/1/lookup.php?i';
+  const { idMeal } = useParams();
+  const fetchMealByID = async () => {
+    const response = await axios(`${API_URL}=${idMeal}`);
+    setMealDetails(response.data);
+  };
+  useEffect(() => {
+    fetchMealByID();
+  }, []);
   return (
     <>
-      <nav className="nav nav-tabs d-flex">
-        <Link className="nav-link p-2" to='/'>Home</Link>
-        <Link className="nav-link me-auto p-2" to='search'>Search</Link>
-        <Link className="nav-link p-2" to='/'>Login</Link>
-        <Link className="nav-link p-2" to='/'>Sign Up</Link>
-      </nav>
+      <NavBar currentPage='' />
       <div className="bg-primary">
-        <h1 className="ms-5">Name of Meal</h1>
-        <p className="fst-italic text-black ms-5">Category:</p>
-        <p className="text-black ms-5 me-5 pb-1">Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-          Mauris quis molestie massa. Aliquam elementum tempus felis
-          vestibulum consequat. Integer sollicitudin purus sem, tempus
-          cursus eros posuere in. Duis et nibh quis erat fermentum elementum a et libero.
-        </p>
+        <div className="d-flex align-items-end">
+          <img
+            src={mealDetails.meals && mealDetails.meals[0].strMealThumb}
+            height={200}
+            width={200}
+            className="me-2 ms-5 mt-2 rounded"
+            alt=""
+          />
+          <div>
+            <h1 className="ms-2">{mealDetails.meals && mealDetails.meals[0].strMeal}</h1>
+            <p className="fst-italic text-black ms-2">Category: {mealDetails.meals && mealDetails.meals[0].strCategory} <span className="font-weight-normal">|</span> Cuisine: {mealDetails.meals && mealDetails.meals[0].strArea}</p>
+          </div>
+        </div>
+        <hr className="border-dark ms-5 me-5" />
+        <p className="text-black ms-5 me-5 pb-1">{mealDetails.meals && mealDetails.meals[0].strInstructions}</p>
+        <hr className="border-dark ms-5 me-5" />
         <div>
           <p className="fst-italic text-decoration-underline text-black ms-5 pb-3">Likes: 342 | Dislikes: 32</p>
         </div>
