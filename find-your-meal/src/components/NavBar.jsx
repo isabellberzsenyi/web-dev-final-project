@@ -8,7 +8,7 @@ function NavBar({ currentPage }) {
       <Link className={linkClassName('home')} to='/'>
         Home
       </Link>
-      <Link className={`${linkClassName('search')} me-auto`} to='search'>
+      <Link className={`${linkClassName('search')} me-auto`} to='/search'>
         Search
       </Link>
       <Link className={linkClassName('login')} to='/login'>

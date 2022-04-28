@@ -55,7 +55,7 @@ function Details() {
             <p className="text-black ms-5 me-5 pb-1">{mealDetails.meals && mealDetails.meals[0].strInstructions}</p>
             <hr className="border-dark ms-5 me-5" style={{ color: 'black' }} />
           </div>
-          <div className="me-5 mt-2 col-3 align-self-end">
+          <div className="me-5 mt-2 col-3 align-self-center">
             <ul className="list-group">
               <li className="list-group-item disabled fw-bold text-decoration-underline text-primary bg-secondary border border-primary">Ingredients</li>
               {
