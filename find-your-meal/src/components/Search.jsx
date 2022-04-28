@@ -54,7 +54,7 @@ function Search() {
                     {meal.strMeal}
                   </Link>
                 </div>
-                <div className="ms-3 me-3 flex-sm-fill col-1 text-truncate text-dark align-self-center">
+                <div className="ms-4 me-3 flex-sm-fill col-1 text-truncate text-dark align-self-center">
                   Directions:
                   <br />
                   {meal.strInstructions}
