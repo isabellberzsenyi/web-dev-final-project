@@ -16,15 +16,11 @@ export const toggleLikeMeal = async (mealId, userId) => {
 };
 
 export const getUserLikes = async (userId) => {
-  const response = await api.post(`${LIKES_API}/userLikes}`, {
-    userId,
-  });
+  const response = await api.get(`${LIKES_API}/userLikes/${userId}`);
   return response.data;
 };
 
 export const getMealLikes = async (mealId) => {
-  const response = await api.post(`${LIKES_API}/mealLikes}`, {
-    mealId,
-  });
+  const response = await api.get(`${LIKES_API}/mealLikes/${mealId}`);
   return response.data;
 };
