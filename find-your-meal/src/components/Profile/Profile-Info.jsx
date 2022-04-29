@@ -1,10 +1,16 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import NavBar from '../NavBar';
 import ProfileNavBar from './Profile-NavBar';
 import { useProfile } from '../../contexts/profile-context';
 
 function ProfileInfo() {
+  const [signedIn, setSignedIn] = useState(false);
   const { profile } = useProfile();
+
+  useEffect(() => {
+    setSignedIn(!!profile);
+  }, [profile]);
+
   return (
     <>
       <NavBar currentPage='' />
@@ -15,12 +21,16 @@ function ProfileInfo() {
           <div className='form-group'>
             <label htmlFor='firstName' className='form-field my-2'>
               <p className='form-label'> First Name </p>
-              <input
-                type='text'
-                className='form-control pl-2'
-                id='firstName'
-                value={profile.firstName}
-              />
+              {!(signedIn && profile) ? (
+                <p>{profile.name}</p>
+              ) : (
+                <input
+                  type='text'
+                  className='form-control pl-2'
+                  id='firstName'
+                  value={profile.firstName}
+                />
+              )}
             </label>
           </div>
           <div className='form-group'>
