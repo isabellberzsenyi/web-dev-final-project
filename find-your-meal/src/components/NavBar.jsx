@@ -30,6 +30,22 @@ function NavBar({ currentPage }) {
         </>
       ) : (
         <div className='d-flex align-items-center'>
+          <div className="dropdown">
+            <button className="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Hey {profile.firstName}
+            </button>
+            <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <Link className={linkClassName('profile')} to='/profile'>
+                Profile
+              </Link>
+              <Link className={linkClassName('likes')} to='/profile/likes'>
+                Your Likes
+              </Link>
+              <Link className={linkClassName('comments')} to='/profile/comments'>
+                Your Comments
+              </Link>
+            </div>
+          </div>
           <p className='my-0 mx-2'>Hey {profile.firstName}</p>
           <button type='button' onClick={() => signout()}>
             Sign Out

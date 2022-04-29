@@ -20,6 +20,9 @@ function App() {
             <Route path='details/:idMeal' element={<Details />} />
             <Route path='/login' element={<Login />} />
             <Route path='/register' element={<SignUp />} />
+            <Route path='/profile' element={<SignUp />} />
+            <Route path='/profile/likes' element={<SignUp />} />
+            <Route path='/profile/comments' element={<SignUp />} />
           </Routes>
         </div>
       </BrowserRouter>

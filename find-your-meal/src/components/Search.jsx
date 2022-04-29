@@ -14,7 +14,11 @@ function Search() {
   const API_URL = 'https://www.themealdb.com/api/json/v1/1/search.php?s';
   const searchMealByName = async () => {
     const response = await axios.get(`${API_URL}=${nameRef.current.value}`);
-    setMeals(response.data.meals);
+    if (response && response.data && response.data.meals) {
+      setMeals(response.data.meals);
+    } else {
+      setMeals([]);
+    }
     // navigate(`/search/${nameRef.current.value}`);
   };
 
@@ -29,7 +33,7 @@ function Search() {
     <>
       <NavBar currentPage='search' />
       <div className="bg-primary">
-        <h2 className="ms-2">Search a meal</h2>
+        <h1 className="ms-2">Search a meal</h1>
         <div className="d-flex flex-row ms-2 me-2 pb-2">
           <input ref={nameRef} className="form-control" />
           <button onClick={searchMealByName} type="button" className="btn btn-secondary">
