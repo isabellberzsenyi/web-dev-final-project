@@ -1,8 +1,10 @@
 import React from 'react';
 import NavBar from '../NavBar';
 import ProfileNavBar from './Profile-NavBar';
+import { useProfile } from '../../contexts/profile-context';
 
 function ProfileInfo() {
+  const { profile } = useProfile();
   return (
     <>
       <NavBar currentPage='' />
@@ -17,6 +19,7 @@ function ProfileInfo() {
                 type='text'
                 className='form-control pl-2'
                 id='firstName'
+                value={profile.firstName}
               />
             </label>
           </div>
@@ -27,7 +30,7 @@ function ProfileInfo() {
                 type='text'
                 className='form-control pl-2'
                 id='lastName'
-                value='LastName'
+                value={profile.lastName}
               />
             </label>
           </div>
@@ -38,7 +41,7 @@ function ProfileInfo() {
                 type='email'
                 className='form-control pl-2'
                 id='email'
-                value='Email@Email.com'
+                value={profile.email}
               />
             </label>
           </div>
@@ -49,7 +52,7 @@ function ProfileInfo() {
                 type='text'
                 className='form-control pl-2'
                 id='password'
-                value='******'
+                value={profile.password}
               />
             </label>
           </div>
@@ -63,6 +66,7 @@ function ProfileInfo() {
                   name='accountType'
                   id='accountTypePro'
                   value='Pro'
+                  checked={profile.accountType === 'pro'}
                 />
                 Pro
               </label>
@@ -75,6 +79,7 @@ function ProfileInfo() {
                   name='accountType'
                   id='accountTypeBasic'
                   value='Basic'
+                  checked={profile.accountType === 'basic'}
                 />
                 Basic
               </label>
