@@ -8,15 +8,17 @@ import * as likeService from '../../service/like-service';
 function Home() {
   const [signedIn, setSignedIn] = useState(false);
   const { profile } = useProfile();
+  console.log(profile);
 
   const [userLikes, setUserLikes] = useState([]);
   const [generalLikes, setGeneralLikes] = useState([]);
 
   const API = 'https://www.themealdb.com/api/json/v1/1/search.php?f=';
 
-  const findLikes = async () => {
-    let generalMeals = [];
-    // generate the alphabet
+  const findAllMeals = async () => {
+    let allMeals = [];
+
+    // generate the alphabet and fills array of all meals
     // eslint-disable-next-line no-plusplus
     for (let i = 97; i < 123; i++) {
       const letter = String.fromCharCode(i);
@@ -24,26 +26,32 @@ function Home() {
       const response = await axios.get(`${API}${letter}`);
 
       if (response.data.meals != null) {
-        generalMeals = generalMeals.concat(response.data.meals);
+        allMeals = allMeals.concat(response.data.meals);
       }
     }
 
+    // updates all meals with likes
     // eslint-disable-next-line no-plusplus
-    for (let i = 0; i < generalMeals.length; i++) {
-      const meal = generalMeals[i];
+    for (let i = 0; i < allMeals.length; i++) {
+      const meal = allMeals[i];
       // eslint-disable-next-line no-await-in-loop
       meal.likes = await likeService.getMealLikes(meal.idMeal).length;
     }
 
-    generalMeals.sort((a, b) => b.likes - a.likes);
+    // sorts the meals from most liked to least
+    allMeals.sort((a, b) => b.likes - a.likes);
 
     const generalTempArr = [];
-    generalTempArr.push(generalMeals[0]);
-    generalTempArr.push(generalMeals[1]);
-    generalTempArr.push(generalMeals[2]);
+    generalTempArr.push(allMeals[0]);
+    generalTempArr.push(allMeals[1]);
+    generalTempArr.push(allMeals[2]);
     setGeneralLikes(generalTempArr);
 
+    // find UserMeals //
+
     const userMeals = [];
+
+    // if there is a profile, find all the meals user likes
     // eslint-disable-next-line no-underscore-dangle
     if (profile) {
       // eslint-disable-next-line no-underscore-dangle
@@ -51,20 +59,23 @@ function Home() {
     }
 
     const userTempArr = [];
-    userTempArr.push(userMeals[0]);
-    userTempArr.push(userMeals[1]);
-    userTempArr.push(userMeals[2]);
-    setUserLikes(userTempArr);
 
-    // profile._id --> get current user id
+    if (userMeals.length !== 0) {
+      userTempArr.push(userMeals[0]);
+      userTempArr.push(userMeals[1]);
+      userTempArr.push(userMeals[2]);
+    }
+
+    setUserLikes(userTempArr);
   };
   useEffect(() => {
-    findLikes();
+    findAllMeals();
   }, []);
 
   useEffect(() => {
     setSignedIn(!!profile);
   }, [profile]);
+
   return (
     <>
       <NavBar currentPage='home' />
@@ -81,6 +92,7 @@ function Home() {
       <br />
       {!(signedIn && profile) ? (<h3>Most Liked Meals</h3>) : (<h3>Your Liked Meals</h3>) }
       <div className='row'>
+        {/* eslint-disable-next-line no-nested-ternary */}
         { !(signedIn && profile) ? (
           generalLikes.map((meal) => (
             <div className='card'>
@@ -91,15 +103,19 @@ function Home() {
               </div>
             </div>
           ))) : (
-          userLikes.map((meal) => (
-            <div className='card'>
-              <img src={meal.strMealThumb} alt={meal.strMeal} className='card-img' />
-              <div className='container'>
-                <h5>{meal.strMeal}</h5>
-                <h6>{meal.strCategory}</h6>
-              </div>
-            </div>
-          )))}
+          (userLikes.length === 0)
+            ? (<h5> Like some recipes to see them here! </h5>)
+            : (
+              userLikes.map((meal) => (
+                <div className='card'>
+                  <img src={meal.strMealThumb} alt={meal.strMeal} className='card-img' />
+                  <div className='container'>
+                    <h5>{meal.strMeal}</h5>
+                    <h6>{meal.strCategory}</h6>
+                  </div>
+                </div>
+              ))
+            ))}
       </div>
       <br />
     </>

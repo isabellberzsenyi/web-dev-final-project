@@ -13,7 +13,7 @@ function ProfileInfo() {
 
   return (
     <>
-      <NavBar currentPage='' />
+      <NavBar currentPage='info' />
       <h1> Profile </h1>
       <ProfileNavBar currentPage='info' />
       <form className='form-container'>
