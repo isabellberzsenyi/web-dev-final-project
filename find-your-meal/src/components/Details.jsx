@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useProfile } from '../contexts/profile-context';
-// import { getMealLikes } from '../service/like-service';
+import * as service from '../service/like-service';
 import NavBar from './NavBar';
 
 function Details() {
@@ -31,10 +31,11 @@ function Details() {
   const { profile } = useProfile();
   const navigate = useNavigate();
 
-  //   const [currLikes, setCurrLikes] = useState({});
-  //   const totalLikes = async () => {
-  //     setCurrLikes(getMealLikes({ idMeal }));
-  //   };
+  const [currLikes, setCurrLikes] = useState({});
+  const getTotalLikes = async () => {
+    const likes = await service.getMealLikes({ idMeal });
+    setCurrLikes(likes);
+  };
 
   useEffect(() => {
     fetchMealByID();
@@ -48,9 +49,9 @@ function Details() {
     setSignedIn(!!profile);
   }, [profile]);
 
-  //   useEffect(() => {
-  //     totalLikes();
-  //   }, [0]);
+  useEffect(() => {
+    getTotalLikes();
+  }, [0]);
 
   return (
     <>
@@ -68,7 +69,7 @@ function Details() {
               />
               <div>
                 <h2 className="ms-2 me-5">{mealDetails.meals && mealDetails.meals[0].strMeal}</h2>
-                <p className="fw-bold text-secondary ms-2">Category: {mealDetails.meals && mealDetails.meals[0].strCategory}  <span className="fst-normal"> |</span> Cuisine: {mealDetails.meals && mealDetails.meals[0].strArea}</p>
+                <p className="fw-bold text-secondary ms-2 me-5">Category: {mealDetails.meals && mealDetails.meals[0].strCategory}  <span className="fst-normal"> |</span> Cuisine: {mealDetails.meals && mealDetails.meals[0].strArea}</p>
               </div>
             </div>
             <hr className="border-dark ms-5 me-5" style={{ color: 'black' }} />
@@ -85,7 +86,7 @@ function Details() {
           </div>
         </div>
         <div className="mt-2">
-          <p className="fw-bold text-black ms-5 pb-3"><i className="fas fa-heart text-info" /> <i className="fas fa-heart-broken text-secondary" /></p>
+          <p className="fw-bold text-black ms-5 pb-3"><i className="fas fa-heart text-info" /> <i className="fas fa-heart-broken text-secondary" />{ currLikes.length }</p>
         </div>
       </div>
       {!(signedIn && profile) ? (
@@ -93,10 +94,7 @@ function Details() {
           <div className="card-header">
             <h5>Write a comment</h5>
             <div className="d-flex flex-column ms-2 me-2 pb-2">
-              <textarea disabled className="form-control">
-                Want to be able to see and leave comments on your favorite meals?
-                Sign up today using the link below!
-              </textarea>
+              <textarea disabled className="form-control" value="Want to be able to see and leave comments on your favorite meals? Sign up today using the link below!" />
               <button type='button' className='btn btn-link' onClick={() => navigate('/register')}>
                 Not a user? Register now.
               </button>
@@ -110,10 +108,7 @@ function Details() {
             <div className="d-flex flex-column ms-2 me-2 pb-2">
               {(profile.accountType.type !== 'pro') ? (
                 <div>
-                  <textarea disabled className="form-control">
-                    Want to be able to leave comments on your favorite meals?
-                    Upgrade to a Pro account by using the link below!
-                  </textarea>
+                  <textarea disabled className="form-control" value="Want to be able to leave comments on your favorite meals? Upgrade to a Pro account by using the link below!" />
                   <button type='button' className='btn btn-link' onClick={() => navigate('/profile')}>
                     Need to upgrade to Pro? Change your settings here!
                   </button>
