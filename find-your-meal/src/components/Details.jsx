@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useProfile } from '../contexts/profile-context';
+// import { getMealLikes } from '../service/like-service';
 import NavBar from './NavBar';
 
 function Details() {
@@ -23,13 +24,17 @@ function Details() {
         tempIngredientList.push(mealDetails.meals[0][listNum]);
       }
     }
-    console.log(tempIngredientList);
     setIngredientList(tempIngredientList);
   };
 
   const [signedIn, setSignedIn] = useState(false);
   const { profile } = useProfile();
   const navigate = useNavigate();
+
+  //   const [currLikes, setCurrLikes] = useState({});
+  //   const totalLikes = async () => {
+  //     setCurrLikes(getMealLikes({ idMeal }));
+  //   };
 
   useEffect(() => {
     fetchMealByID();
@@ -42,6 +47,10 @@ function Details() {
   useEffect(() => {
     setSignedIn(!!profile);
   }, [profile]);
+
+  //   useEffect(() => {
+  //     totalLikes();
+  //   }, [0]);
 
   return (
     <>
@@ -76,7 +85,7 @@ function Details() {
           </div>
         </div>
         <div className="mt-2">
-          <p className="fw-bold text-black ms-5 pb-3"><i className="fas fa-heart text-info" /> 342 | <i className="fas fa-heart-broken text-secondary" /> 32</p>
+          <p className="fw-bold text-black ms-5 pb-3"><i className="fas fa-heart text-info" /> <i className="fas fa-heart-broken text-secondary" /></p>
         </div>
       </div>
       {!(signedIn && profile) ? (
@@ -99,12 +108,25 @@ function Details() {
           <div className="card-header">
             <h5>Write a comment</h5>
             <div className="d-flex flex-column ms-2 me-2 pb-2">
-              <textarea className="form-control" />
-              <button type="button" className="btn btn-primary">
-                Post
-              </button>
+              {(profile.accountType.type !== 'pro') ? (
+                <div>
+                  <textarea disabled className="form-control">
+                    Want to be able to leave comments on your favorite meals?
+                    Upgrade to a Pro account by using the link below!
+                  </textarea>
+                  <button type='button' className='btn btn-link' onClick={() => navigate('/profile')}>
+                    Need to upgrade to Pro? Change your settings here!
+                  </button>
+                </div>
+              ) : (
+                <div>
+                  <textarea className="form-control" />
+                  <button type="button" className="btn btn-primary">
+                    Post
+                  </button>
+                </div>
+              )}
             </div>
-
           </div>
           <ul className="list-group">
             <li className="list-group-item mb-2">
