@@ -19,7 +19,6 @@ function Details() {
   };
 
   const [ingredientList, setIngredientList] = useState({});
-
   const getIngredients = async () => {
     const tempIngredientList = [];
     for (let i = 1; i < 21; i += 1) {
@@ -31,10 +30,31 @@ function Details() {
     setIngredientList(tempIngredientList);
   };
 
+  //   const [measureList, setMeasureList] = useState({});
+  //   const getMeasures = async () => {
+  //     const tempMeasureList = [];
+  //     for (let i = 1; i < 21; i += 1) {
+  //       const listNumMeasure = `strMeasure${i}`;
+  //       if (mealDetails.meals && mealDetails.meals[0][listNumMeasure]) {
+  //         tempIngredientList.push(mealDetails.meals[0][listNumMeasure]);
+  //       }
+  //     }
+  //     setMeasureList(tempMeasureList);
+  //   };
+
   const [currLikes, setCurrLikes] = useState(0);
   const getTotalLikes = async () => {
     const likes = await likeService.getMealLikes({ idMeal });
     setCurrLikes(likes.length);
+  };
+
+  const [userLike, setUserLike] = useState([]);
+  const handleLikes = async () => {
+    const mealId = { idMeal };
+    // eslint-disable-next-line no-underscore-dangle
+    const userId = profile._id;
+    const response = await likeService.toggleLikeMeal(mealId, userId);
+    setUserLike(response.data);
   };
 
   useEffect(() => {
@@ -43,6 +63,7 @@ function Details() {
 
   useEffect(() => {
     getIngredients();
+  //     getMeasures();
   }, [mealDetails]);
 
   useEffect(() => {
@@ -52,6 +73,10 @@ function Details() {
   useEffect(() => {
     getTotalLikes();
   }, [currLikes]);
+
+  useEffect(() => {
+    handleLikes();
+  }, [userLike]);
 
   return (
     <>
@@ -75,8 +100,31 @@ function Details() {
             <hr className="border-dark ms-5 me-5" style={{ color: 'black' }} />
             <p className="text-black ms-5 me-5 pb-1">{mealDetails.meals && mealDetails.meals[0].strInstructions}</p>
             <hr className="border-dark ms-5 me-5" style={{ color: 'black' }} />
+            {!(signedIn && profile) ? (
+              <div className="mt-2 mb-2">
+                <span className="text-black fw-bold ms-5"> Likes: { currLikes } </span>
+                <br />
+                <span className="text-secondary fst-italic ms-5">Love this meal? Sign up now to give it a like! </span>
+                <br />
+                <button type="button" className="btn btn-secondary text-primary ms-5" onClick={() => navigate('/register')}> Register Now.</button>
+              </div>
+            ) : (
+              <div className="mt-2 mb-2">
+                <br />
+                <button type="button" onClick={handleLikes} className="btn btn-primary fw-bold text-black ms-5 mb-3">
+                  {
+                    userLike && <i className="fas fa-heart text-info" />
+                  }
+                  {
+                    !userLike && <i className="far fa-heart text-info" />
+                  }
+                  { currLikes }
+                </button>
+                <span className="text-secondary fst-italic ms-5">Love this meal? Click the heart above to like it!</span>
+              </div>
+            )}
           </div>
-          <div className="col-sm-12 col-md-3 me-5 mt-2 align-self-center">
+          <div className="col-sm-12 col-md-3 me-5 mt-2 mb-2 align-self-center">
             <ul className="list-group">
               <li className="list-group-item disabled fw-bold text-decoration-underline text-primary bg-secondary border border-primary">Ingredients</li>
               {
@@ -84,9 +132,6 @@ function Details() {
               }
             </ul>
           </div>
-        </div>
-        <div className="mt-2">
-          <p className="fw-bold text-black ms-5 pb-3"><i className="fas fa-heart text-info" /> <i className="fas fa-heart-broken text-secondary" /> { currLikes }</p>
         </div>
       </div>
       {!(signedIn && profile) ? (
