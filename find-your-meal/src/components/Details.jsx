@@ -2,10 +2,14 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useProfile } from '../contexts/profile-context';
-import * as service from '../service/like-service';
+import * as likeService from '../service/like-service';
 import NavBar from './NavBar';
 
 function Details() {
+  const [signedIn, setSignedIn] = useState(false);
+  const { profile } = useProfile();
+  const navigate = useNavigate();
+
   const [mealDetails, setMealDetails] = useState({});
   const API_URL = 'https://www.themealdb.com/api/json/v1/1/lookup.php?i';
   const { idMeal } = useParams();
@@ -27,14 +31,10 @@ function Details() {
     setIngredientList(tempIngredientList);
   };
 
-  const [signedIn, setSignedIn] = useState(false);
-  const { profile } = useProfile();
-  const navigate = useNavigate();
-
-  const [currLikes, setCurrLikes] = useState({});
+  const [currLikes, setCurrLikes] = useState(0);
   const getTotalLikes = async () => {
-    const likes = await service.getMealLikes({ idMeal });
-    setCurrLikes(likes);
+    const likes = await likeService.getMealLikes({ idMeal });
+    setCurrLikes(likes.length);
   };
 
   useEffect(() => {
@@ -51,7 +51,7 @@ function Details() {
 
   useEffect(() => {
     getTotalLikes();
-  }, [0]);
+  }, [currLikes]);
 
   return (
     <>
@@ -86,7 +86,7 @@ function Details() {
           </div>
         </div>
         <div className="mt-2">
-          <p className="fw-bold text-black ms-5 pb-3"><i className="fas fa-heart text-info" /> <i className="fas fa-heart-broken text-secondary" />{ currLikes.length }</p>
+          <p className="fw-bold text-black ms-5 pb-3"><i className="fas fa-heart text-info" /> <i className="fas fa-heart-broken text-secondary" /> { currLikes }</p>
         </div>
       </div>
       {!(signedIn && profile) ? (
@@ -96,7 +96,7 @@ function Details() {
             <div className="d-flex flex-column ms-2 me-2 pb-2">
               <textarea disabled className="form-control" value="Want to be able to see and leave comments on your favorite meals? Sign up today using the link below!" />
               <button type='button' className='btn btn-link' onClick={() => navigate('/register')}>
-                Not a user? Register now.
+                Register now.
               </button>
             </div>
           </div>
