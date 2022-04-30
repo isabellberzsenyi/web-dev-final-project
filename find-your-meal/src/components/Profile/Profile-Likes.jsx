@@ -8,7 +8,6 @@ function ProfileLikes() {
       <NavBar currentPage='' />
       <h1> Profile </h1>
       <ProfileNavBar currentPage='likes' />
-
     </>
   );
 }

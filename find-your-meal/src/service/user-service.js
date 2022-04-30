@@ -31,3 +31,8 @@ export const checkLoggedIn = async () => {
   const response = await api.post(`${USER_API}/profile`);
   return response.data;
 };
+
+export const updateUser = async () => {
+  const response = await api.put(`${USER_API}/profile`);
+  return response.data;
+};

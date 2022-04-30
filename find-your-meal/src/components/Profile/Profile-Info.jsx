@@ -28,7 +28,7 @@ function ProfileInfo() {
                   type='text'
                   className='form-control pl-2'
                   id='firstName'
-                  value={profile.firstName}
+                  placeholder={profile.firstName}
                 />
               )}
             </label>
@@ -40,7 +40,7 @@ function ProfileInfo() {
                 type='text'
                 className='form-control pl-2'
                 id='lastName'
-                value={profile.lastName}
+                placeholder={profile.lastName}
               />
             </label>
           </div>
@@ -51,7 +51,7 @@ function ProfileInfo() {
                 type='email'
                 className='form-control pl-2'
                 id='email'
-                value={profile.email}
+                placeholder={profile.email}
               />
             </label>
           </div>
@@ -59,15 +59,15 @@ function ProfileInfo() {
             <label htmlFor='password' className='form-field my-2'>
               <p className='form-label'> Password </p>
               <input
-                type='text'
+                type='password'
                 className='form-control pl-2'
                 id='password'
-                value={profile.password}
+                placeholder={profile.password}
               />
             </label>
           </div>
           <div className='d-flex flex-row my-2'>
-            <p style={{ width: '40%' }}>Choose your account type:</p>
+            <p style={{ width: '40%' }}>Account type:</p>
             <div className='form-check form-check-inline'>
               <label className='form-check-label' htmlFor='accountTypePro'>
                 <input
@@ -76,7 +76,7 @@ function ProfileInfo() {
                   name='accountType'
                   id='accountTypePro'
                   value='Pro'
-                  checked={profile.accountType === 'pro'}
+                  checked={profile.accountType[0] === 'pro'}
                 />
                 Pro
               </label>
@@ -89,14 +89,14 @@ function ProfileInfo() {
                   name='accountType'
                   id='accountTypeBasic'
                   value='Basic'
-                  checked={profile.accountType === 'basic'}
+                  checked={profile.accountType[0] === 'basic'}
                 />
                 Basic
               </label>
             </div>
           </div>
         </div>
-        <button type='button' className='btn btn-primary mb-4'>
+        <button type='button' className='btn btn-primary mb-4' onClick={}>
           Update
         </button>
       </form>

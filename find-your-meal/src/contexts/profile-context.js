@@ -38,6 +38,15 @@ export function ProfileProvider({ children }) {
     }
   };
 
+  const updateUser = async () => {
+    try {
+      const data = await userService.updateUser();
+      setProfile(data);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   useEffect(() => {
     checkLoggedIn();
   }, []);
@@ -48,6 +57,7 @@ export function ProfileProvider({ children }) {
     profile,
     signup,
     checkLoggedIn,
+    updateUser,
   };
   return <ProfileContext.Provider value={value}>{children}</ProfileContext.Provider>;
 }
