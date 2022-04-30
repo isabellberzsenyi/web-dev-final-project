@@ -31,11 +31,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="916c06a8-35d2-4918-b29e-5ff67ba2cb35" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/actions/comment-actions.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/reducers/comment-reducers.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/service/comments-service.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/actions/comment-actions.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/actions/comment-actions.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/Details.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Details.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Search.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Search.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/reducers/comment-reducers.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/reducers/comment-reducers.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

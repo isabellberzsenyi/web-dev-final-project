@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import {useDispatch} from "react-redux";
+// import {useDispatch} from "react-redux";
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useProfile } from '../contexts/profile-context';
 import * as likeService from '../service/like-service';
 import * as commentService from '../service/comments-service';
 import NavBar from './NavBar';
-import { createComment } from "../actions/comment-actions.js";
-
+// import { createComment } from "../actions/comment-actions.js";
 
 function Details() {
   const [signedIn, setSignedIn] = useState(false);
@@ -75,21 +74,28 @@ function Details() {
     //       userCommentData[i].meal = await axios.get(`${API_LOOKUP}${mealId}`);
     //     }
 
-    setUserComments(mealCommentData);
+    setMealComments(mealCommentData);
   };
 
-  let [postComment, setPostComment] = useState('');
-  const dispatch = useDispatch();
-  const commentClickHandler = () => {
-     dispatch({type: 'create-comment',
-       comment: postComment
-     });
-  }
-  const [newComment, setNewComment] = useState({mealId: idMeal,
+  const commentRef = useRef();
+  const handleComment = async () => {
     // eslint-disable-next-line no-underscore-dangle
-    userId: profile._id,
-    comment: 'New comment'
-  });
+    const actualComment = await commentService.createComment(idMeal, profile._id, commentRef.current.value);
+    setMealComments([...mealComments, actualComments]);
+  }
+
+  //   let [postComment, setPostComment] = useState('');
+  //   const dispatch = useDispatch();
+  //   const commentClickHandler = () => {
+  //      dispatch({type: 'create-comment',
+  //        comment: postComment
+  //      });
+  //   }
+  //   const [newComment, setNewComment] = useState({mealId: idMeal,
+  //     // eslint-disable-next-line no-underscore-dangle
+  //     userId: profile._id,
+  //     comment: 'New comment'
+  //   });
 
   useEffect(() => {
     fetchMealByID();
@@ -108,9 +114,9 @@ function Details() {
     getTotalLikes();
   }, [currLikes]);
 
-  useEffect(() => {
-    handleLikes();
-  }, [userLike]);
+  //   useEffect(() => {
+  //     handleLikes();
+  //   }, [userLike]);
 
   useEffect(() => {
     findMealComments();
@@ -198,13 +204,8 @@ function Details() {
                 </div>
               ) : (
                 <div>
-                  <textarea className="form-control" placeholder="Add a comment!"
-                    onChange={(e) =>
-                      setNewComment({...newComment,
-                      comment: e.target.value})} />
-                  <button onClick={() =>
-                    createComment(dispatch, newComment)}
-                    type="button" className="btn btn-primary">
+                  <textarea ref={commentRef} className="form-control"></textarea>
+                  <button onClick={handleComment} type="button" className="btn btn-primary">
                     Post
                   </button>
                 </div>

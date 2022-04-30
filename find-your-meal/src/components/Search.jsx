@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import {
-  Link, useParams,
+  Link, useParams, useNavigate,
 } from 'react-router-dom';
 import axios from 'axios';
 import NavBar from './NavBar';
