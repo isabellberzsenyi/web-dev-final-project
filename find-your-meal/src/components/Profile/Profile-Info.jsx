@@ -96,7 +96,7 @@ function ProfileInfo() {
             </div>
           </div>
         </div>
-        <button type='button' className='btn btn-primary mb-4' onClick={}>
+        <button type='button' className='btn btn-primary mb-4'>
           Update
         </button>
       </form>

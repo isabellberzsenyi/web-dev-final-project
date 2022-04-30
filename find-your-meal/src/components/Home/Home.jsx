@@ -8,12 +8,11 @@ import * as likeService from '../../service/like-service';
 function Home() {
   const [signedIn, setSignedIn] = useState(false);
   const { profile } = useProfile();
-  console.log(profile);
-
   const [userLikes, setUserLikes] = useState([]);
   const [generalLikes, setGeneralLikes] = useState([]);
 
-  const API = 'https://www.themealdb.com/api/json/v1/1/search.php?f=';
+  const API_SEARCH = 'https://www.themealdb.com/api/json/v1/1/search.php?f=';
+  const API_LOOKUP = 'https://www.themealdb.com/api/json/v1/1/lookup.php?i=';
 
   const findAllMeals = async () => {
     let allMeals = [];
@@ -23,7 +22,7 @@ function Home() {
     for (let i = 97; i < 123; i++) {
       const letter = String.fromCharCode(i);
       // eslint-disable-next-line no-await-in-loop
-      const response = await axios.get(`${API}${letter}`);
+      const response = await axios.get(`${API_SEARCH}${letter}`);
 
       if (response.data.meals != null) {
         allMeals = allMeals.concat(response.data.meals);
@@ -48,25 +47,32 @@ function Home() {
     setGeneralLikes(generalTempArr);
 
     // find UserMeals //
-
     const userMeals = [];
+    let userMealsId = [];
 
     // if there is a profile, find all the meals user likes
-    // eslint-disable-next-line no-underscore-dangle
     if (profile) {
       // eslint-disable-next-line no-underscore-dangle
-      userMeals.concat(likeService.getUserLikes(profile._id));
+      userMealsId = await likeService.getUserLikes(profile._id);
     }
 
-    const userTempArr = [];
-
-    if (userMeals.length !== 0) {
-      userTempArr.push(userMeals[0]);
-      userTempArr.push(userMeals[1]);
-      userTempArr.push(userMeals[2]);
+    // eslint-disable-next-line no-plusplus
+    for (let i = 0; i < userMealsId.length; i++) {
+      const { mealId } = userMealsId[i];
+      // eslint-disable-next-line no-await-in-loop
+      const response = await axios.get(`${API_LOOKUP}${mealId}`);
+      userMeals.push(response.data.meals[0]);
     }
 
-    setUserLikes(userTempArr);
+    if (userMeals.length >= 3) {
+      userMeals.slice(2);
+    } else if (userMeals.length === 2) {
+      userMeals.slice(1);
+    } else {
+      userMeals.slice(0);
+    }
+
+    setUserLikes(userMeals);
   };
   useEffect(() => {
     findAllMeals();
