@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from 'react';
+import {useDispatch} from "react-redux";
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useProfile } from '../contexts/profile-context';
 import * as likeService from '../service/like-service';
+import * as commentService from '../service/comments-service';
 import NavBar from './NavBar';
+import { createComment } from "../actions/comment-actions.js";
+
 
 function Details() {
   const [signedIn, setSignedIn] = useState(false);
@@ -57,6 +61,36 @@ function Details() {
     setUserLike(response.data);
   };
 
+  const [mealComments, setMealComments] = useState([]);
+  const findMealComments = async () => {
+    let mealCommentData = [];
+
+    // eslint-disable-next-line no-underscore-dangle
+    mealCommentData = await commentService.getMealComments(idMeal);
+
+    // eslint-disable-next-line no-plusplus
+    //     for (let i = 0; i < mealCommentData.length; i++) {
+    //       const { mealId } = mealCommentData[i];
+    //       // eslint-disable-next-line no-await-in-loop
+    //       userCommentData[i].meal = await axios.get(`${API_LOOKUP}${mealId}`);
+    //     }
+
+    setUserComments(mealCommentData);
+  };
+
+  let [postComment, setPostComment] = useState('');
+  const dispatch = useDispatch();
+  const commentClickHandler = () => {
+     dispatch({type: 'create-comment',
+       comment: postComment
+     });
+  }
+  const [newComment, setNewComment] = useState({mealId: idMeal,
+    // eslint-disable-next-line no-underscore-dangle
+    userId: profile._id,
+    comment: 'New comment'
+  });
+
   useEffect(() => {
     fetchMealByID();
   }, []);
@@ -77,6 +111,10 @@ function Details() {
   useEffect(() => {
     handleLikes();
   }, [userLike]);
+
+  useEffect(() => {
+    findMealComments();
+  }, []);
 
   return (
     <>
@@ -160,8 +198,13 @@ function Details() {
                 </div>
               ) : (
                 <div>
-                  <textarea className="form-control" />
-                  <button type="button" className="btn btn-primary">
+                  <textarea className="form-control" placeholder="Add a comment!"
+                    onChange={(e) =>
+                      setNewComment({...newComment,
+                      comment: e.target.value})} />
+                  <button onClick={() =>
+                    createComment(dispatch, newComment)}
+                    type="button" className="btn btn-primary">
                     Post
                   </button>
                 </div>
@@ -169,18 +212,9 @@ function Details() {
             </div>
           </div>
           <ul className="list-group">
-            <li className="list-group-item mb-2">
-              <p className="fw-bold">Username1</p>
-              <p>Love it</p>
-            </li>
-            <li className="list-group-item mb-2">
-              <p className="fw-bold">Username2</p>
-              <p>Love it</p>
-            </li>
-            <li className="list-group-item">
-              <p className="fw-bold">Username3</p>
-              <p>Love it</p>
-            </li>
+            {
+              mealComments.map && mealComments.map((comment) => <li className="list-group-item mb-2"> <p className="fw-bold">{comment.userId}</p> <p>{comment.comment}</p> </li>)
+            }
           </ul>
         </div>
       )}
