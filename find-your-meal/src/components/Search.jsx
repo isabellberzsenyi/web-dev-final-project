@@ -9,7 +9,7 @@ function Search() {
   const [theMeals, setMeals] = useState([]);
   const { searchString } = useParams();
   const nameRef = useRef();
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   // const location = useLocation();
   const API_URL = 'https://www.themealdb.com/api/json/v1/1/search.php?s';
   const searchMealByName = async () => {
@@ -19,7 +19,7 @@ function Search() {
     } else {
       setMeals([]);
     }
-    // navigate(`/search/${nameRef.current.value}`);
+    navigate(`/search/${nameRef.current.value}`);
   };
 
   useEffect(() => {
