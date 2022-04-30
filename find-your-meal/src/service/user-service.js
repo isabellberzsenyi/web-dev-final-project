@@ -28,6 +28,6 @@ export const signin = async (email, password) => {
 };
 
 export const checkLoggedIn = async () => {
-  const response = await api.post(`${USER_API}/profile`);
+  const response = await api.get(`${USER_API}/profile`);
   return response.data;
 };
