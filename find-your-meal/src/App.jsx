@@ -2,6 +2,8 @@ import React from 'react';
 import './vendors/bootstrap/bootstrap.min.css';
 import './vendors/fontawesome/css/all.min.css';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import Details from './components/Details';
+import Search from './components/Search';
 import Home from './components/Home/Home';
 import ProfileInfo from './components/Profile/Profile-Info';
 import ProfileComments from './components/Profile/Profile-Comments';
@@ -17,6 +19,9 @@ function App() {
         <div className='container'>
           <Routes>
             <Route path='/' element={<Home />} />
+            <Route path='search' element={<Search />} />
+            <Route path='search/:searchString' element={<Search />} />
+            <Route path='details/:idMeal' element={<Details />} />
             <Route path='/login' element={<Login />} />
             <Route path='/register' element={<SignUp />} />
             <Route path='/profile' element={<ProfileInfo />} />

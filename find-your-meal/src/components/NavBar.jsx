@@ -22,7 +22,7 @@ function NavBar({ currentPage }) {
       <Link className={linkClassName('home')} to='/'>
         Home
       </Link>
-      <Link className={`${linkClassName('search')} me-auto`} to='search'>
+      <Link className={`${linkClassName('search')} me-auto`} to='/search'>
         Search
       </Link>
       {!(signedIn && profile) ? (
@@ -39,7 +39,7 @@ function NavBar({ currentPage }) {
           <Link className='my-0 mx-2' to='/profile'>
             Hey {profile.firstName}
           </Link>
-          <button type='button' onClick={onClickSignOut}>
+          <button className='btn btn-primary' type='button' onClick={onClickSignOut}>
             Sign Out
           </button>
         </div>
