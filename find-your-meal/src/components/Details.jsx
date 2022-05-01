@@ -1,3 +1,4 @@
+/* eslint-disable implicit-arrow-linebreak */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable operator-linebreak */
 import React, { useEffect, useState, useRef } from 'react';
@@ -90,9 +91,41 @@ function Details() {
     findMealComments();
   }, [mealComments]);
 
+  const renderComments = () =>
+    mealComments.map((comment) => (
+      <li className='list-group-item mb-2'>
+        <button
+          type='button'
+          className='btn btn-link fw-bold'
+          onClick={() => navigate(`/profile/${comment.userId}`)}
+        >
+          {comment.firstName} {comment.lastName}
+        </button>
+        <p>{comment.comment}</p>
+      </li>
+    ));
+
+  const renderCommentedUsers = () =>
+    mealComments
+      .filter((c) => c.firstName && c.lastName)
+      .map((comment) => (
+        <li className='list-group-item mb-2'>
+          <button
+            type='button'
+            className='btn btn-link fw-bold'
+            onClick={() => navigate(`/profile/${comment.userId}`)}
+          >
+            User {comment.firstName} {comment.lastName} left a comment
+          </button>
+        </li>
+      ));
+
   return (
     <>
       <NavBar currentPage='' />
+      <button className='btn btn-primary' type='button' onClick={() => navigate('/search')}>
+        Back to Search
+      </button>
       <div className='bg-primary container'>
         <div className='d-flex row'>
           <div className='col-sm-12 col-md-8'>
@@ -173,17 +206,17 @@ function Details() {
       {!(signedIn && profile) ? (
         <div className='card'>
           <div className='card-header'>
-            <h5>Write a comment</h5>
             <div className='d-flex flex-column ms-2 me-2 pb-2'>
               <textarea
                 disabled
                 className='form-control'
-                value='Want to be able to see and leave comments on your favorite meals? Sign up today using the link below!'
+                value='These users left a comment, log in to see what they said! Sign up today using the link below!'
               />
               <button type='button' className='btn btn-link' onClick={() => navigate('/register')}>
                 Register now.
               </button>
             </div>
+            {renderCommentedUsers()}
           </div>
         </div>
       ) : (
@@ -221,18 +254,13 @@ function Details() {
             </div>
           </div>
           <ul className='list-group'>
-            {mealComments.map((comment) => (
-              <li className='list-group-item mb-2'>
-                <button
-                  type='button'
-                  className='btn btn-link fw-bold'
-                  onClick={() => navigate(`/profile/${comment.userId}`)}
-                >
-                  {comment.firstName} {comment.lastName}
-                </button>
-                <p>{comment.comment}</p>
-              </li>
-            ))}
+            {mealComments.length > 0 ? (
+              renderComments()
+            ) : (
+              <div className='center'>
+                <h4>Leave a comment!</h4>
+              </div>
+            )}
           </ul>
         </div>
       )}

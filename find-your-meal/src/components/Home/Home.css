@@ -17,6 +17,10 @@
   align-items: center;
 }
 
+.card-click:hover {
+  cursor: pointer;
+}
+
 .card-img {
   padding: 2mm;
   height: 15vw;

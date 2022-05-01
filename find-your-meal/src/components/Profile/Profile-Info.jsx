@@ -8,7 +8,7 @@ import { useProfile } from '../../contexts/profile-context';
 import { findUserById } from '../../service/user-service';
 
 function ProfileInfo() {
-  const { profile } = useProfile();
+  const { profile, checkLoggedIn } = useProfile();
   const { updateUser } = useProfile();
   const [isCurrentUser, setIsCurrentUser] = useState(false);
   const [userInfo, setUserInfo] = useState({
@@ -19,10 +19,16 @@ function ProfileInfo() {
     accountType: [''],
   });
   const { userId } = useParams();
+
   const fetchUserInfoById = async () => {
-    const response = await findUserById(userId);
-    setUserInfo(response);
-    setIsCurrentUser(profile._id === userId);
+    await checkLoggedIn();
+    const searchId = userId || profile._id;
+
+    if (searchId) {
+      const response = await findUserById(searchId);
+      setUserInfo(response);
+      setIsCurrentUser(profile._id === userId);
+    }
   };
 
   const onSubmit = async () => {
