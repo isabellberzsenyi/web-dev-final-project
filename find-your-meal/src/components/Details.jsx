@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable operator-linebreak */
 import React, { useEffect, useState, useRef } from 'react';
 // import {useDispatch} from "react-redux";
@@ -7,12 +8,13 @@ import { useProfile } from '../contexts/profile-context';
 import * as likeService from '../service/like-service';
 import * as commentService from '../service/comments-service';
 import NavBar from './NavBar';
-// import { findUserById } from '../service/user-service';
-// import { createComment } from "../actions/comment-actions.js";
 
 function Details() {
-  const [signedIn, setSignedIn] = useState(false);
   const { profile } = useProfile();
+  const [signedIn, setSignedIn] = useState(false);
+  const [currLikes, setCurrLikes] = useState([]);
+  const [userLike, setUserLike] = useState(profile && currLikes.includes(profile._id));
+  const [ingredientList, setIngredientList] = useState({});
   const navigate = useNavigate();
 
   const [mealDetails, setMealDetails] = useState({});
@@ -23,7 +25,6 @@ function Details() {
     setMealDetails(response.data);
   };
 
-  const [ingredientList, setIngredientList] = useState({});
   const getIngredients = async () => {
     const tempIngredientList = [];
     for (let i = 1; i < 21; i += 1) {
@@ -35,40 +36,27 @@ function Details() {
     setIngredientList(tempIngredientList);
   };
 
-  //   const [measureList, setMeasureList] = useState({});
-  //   const getMeasures = async () => {
-  //     const tempMeasureList = [];
-  //     for (let i = 1; i < 21; i += 1) {
-  //       const listNumMeasure = `strMeasure${i}`;
-  //       if (mealDetails.meals && mealDetails.meals[0][listNumMeasure]) {
-  //         tempIngredientList.push(mealDetails.meals[0][listNumMeasure]);
-  //       }
-  //     }
-  //     setMeasureList(tempMeasureList);
-  //   };
-
-  const [currLikes, setCurrLikes] = useState(0);
   const getTotalLikes = async () => {
     const likes = await likeService.getMealLikes(idMeal);
-    setCurrLikes(likes.length);
+    const userIdLikes = likes.map((l) => l.userId);
+    console.log({ userIdLikes });
+    setCurrLikes(userIdLikes);
+    setUserLike(profile && currLikes.includes(profile._id));
   };
 
-  const [userLike, setUserLike] = useState([]);
   const handleLikes = async () => {
+    console.log('herer');
     const mealId = idMeal;
-    // eslint-disable-next-line no-underscore-dangle
     const userId = profile._id;
     const response = await likeService.toggleLikeMeal(mealId, userId);
-    setUserLike(response.data);
+    console.log(response, !!response.data);
+    setUserLike(!!response.data);
   };
 
   const [mealComments, setMealComments] = useState([]);
   const findMealComments = async () => {
     let mealCommentData = [];
-
-    // eslint-disable-next-line no-underscore-dangle
     mealCommentData = await commentService.getMealComments(idMeal);
-    console.log(mealCommentData);
     setMealComments(mealCommentData);
   };
 
@@ -76,29 +64,11 @@ function Details() {
   const handleComment = async () => {
     const actualComment = await commentService.createComment(
       idMeal,
-      // eslint-disable-next-line no-underscore-dangle
       profile._id,
       commentRef.current.value,
     );
     setMealComments([...mealComments, actualComment]);
   };
-
-  //   const getCommentUser = async (commentId) => {
-  //     await findUserById(commentId);
-  //   }
-
-  //   let [postComment, setPostComment] = useState('');
-  //   const dispatch = useDispatch();
-  //   const commentClickHandler = () => {
-  //      dispatch({type: 'create-comment',
-  //        comment: postComment
-  //      });
-  //   }
-  //   const [newComment, setNewComment] = useState({mealId: idMeal,
-  //     // eslint-disable-next-line no-underscore-dangle
-  //     userId: profile._id,
-  //     comment: 'New comment'
-  //   });
 
   useEffect(() => {
     fetchMealByID();
@@ -106,7 +76,6 @@ function Details() {
 
   useEffect(() => {
     getIngredients();
-    //     getMeasures();
   }, [mealDetails]);
 
   useEffect(() => {
@@ -115,11 +84,11 @@ function Details() {
 
   useEffect(() => {
     getTotalLikes();
-  }, [currLikes]);
+  }, [currLikes, userLike]);
 
   useEffect(() => {
     findMealComments();
-  }, []);
+  }, [mealComments]);
 
   return (
     <>
@@ -151,7 +120,7 @@ function Details() {
             <hr className='border-dark ms-5 me-5' style={{ color: 'black' }} />
             {!(signedIn && profile) ? (
               <div className='mt-2 mb-2'>
-                <span className='text-black fw-bold ms-5'> Likes: {currLikes} </span>
+                <span className='text-black fw-bold ms-5'> Likes: {currLikes.length} </span>
                 <br />
                 <span className='text-secondary fst-italic ms-5'>
                   Love this meal? Sign up now to give it a like!{' '}
@@ -162,7 +131,6 @@ function Details() {
                   className='btn btn-secondary text-primary ms-5'
                   onClick={() => navigate('/register')}
                 >
-                  {' '}
                   Register Now.
                 </button>
               </div>
@@ -175,7 +143,7 @@ function Details() {
                 >
                   {userLike && <i className='fas fa-heart text-info' />}
                   {!userLike && <i className='far fa-heart text-info' />}
-                  <span> {currLikes}</span>
+                  <span> {currLikes.length}</span>
                 </button>
                 <br />
                 <span className='text-secondary fst-italic ms-5'>
@@ -233,7 +201,7 @@ function Details() {
                   <button
                     type='button'
                     className='btn btn-link'
-                    onClick={() => navigate('/profile')}
+                    onClick={() => navigate(`/profile/${profile._id}`)}
                   >
                     Need to upgrade to Pro? Change your settings here!
                   </button>
@@ -253,16 +221,18 @@ function Details() {
             </div>
           </div>
           <ul className='list-group'>
-            {mealComments.map &&
-              mealComments.map((comment) => (
-                <li className='list-group-item mb-2'>
-                  {' '}
-                  <p className='fw-bold'>
-                    {comment.firstName} {comment.lastName}
-                  </p>{' '}
-                  <p>{comment.comment}</p>{' '}
-                </li>
-              ))}
+            {mealComments.map((comment) => (
+              <li className='list-group-item mb-2'>
+                <button
+                  type='button'
+                  className='btn btn-link fw-bold'
+                  onClick={() => navigate(`/profile/${comment.userId}`)}
+                >
+                  {comment.firstName} {comment.lastName}
+                </button>
+                <p>{comment.comment}</p>
+              </li>
+            ))}
           </ul>
         </div>
       )}

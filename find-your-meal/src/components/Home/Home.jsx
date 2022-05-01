@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+
 import NavBar from '../NavBar';
 import './Home.css';
 import { useProfile } from '../../contexts/profile-context';
 import * as likeService from '../../service/like-service';
 
 function Home() {
+  const navigate = useNavigate();
   const [signedIn, setSignedIn] = useState(false);
   const { profile } = useProfile();
   const [userLikes, setUserLikes] = useState([]);
@@ -87,20 +90,34 @@ function Home() {
       <NavBar currentPage='home' />
       <br />
       <div className='banner center'>
-        <div>
-          <h1> <b> Find Your Meal </b> </h1>
-          <form className='center'>
-            <input type='text' value='' />
-            <input type='button' value='Search' />
-          </form>
+        <div className='d-flex flex-column'>
+          <h1>
+            {' '}
+            <b> Find Your Meal </b>{' '}
+          </h1>
+          <button className='btn btn-primary' type='button' onClick={() => navigate('/search')}>
+            Search
+          </button>
         </div>
       </div>
       <br />
-      {!(signedIn && profile) ? (<h3>Most Liked Meals</h3>) : (<h3>Your Liked Meals</h3>) }
+      {!(signedIn && profile) ? <h3>Most Liked Meals</h3> : <h3>Your Liked Meals</h3>}
       <div className='row'>
         {/* eslint-disable-next-line no-nested-ternary */}
-        { !(signedIn && profile) ? (
+        {!(signedIn && profile) ? (
           generalLikes.map((meal) => (
+            <div className='card card-home'>
+              <img src={meal.strMealThumb} alt={meal.strMeal} className='card-img' />
+              <div className='container'>
+                <h5>{meal.strMeal}</h5>
+                <h6>{meal.strCategory}</h6>
+              </div>
+            </div>
+          ))
+        ) : userLikes.length === 0 ? (
+          <h5> Like some recipes to see them here! </h5>
+        ) : (
+          userLikes.map((meal) => (
             <div className='card'>
               <img src={meal.strMealThumb} alt={meal.strMeal} className='card-img' />
               <div className='container'>
@@ -108,20 +125,8 @@ function Home() {
                 <h6>{meal.strCategory}</h6>
               </div>
             </div>
-          ))) : (
-          (userLikes.length === 0)
-            ? (<h5> Like some recipes to see them here! </h5>)
-            : (
-              userLikes.map((meal) => (
-                <div className='card'>
-                  <img src={meal.strMealThumb} alt={meal.strMeal} className='card-img' />
-                  <div className='container'>
-                    <h5>{meal.strMeal}</h5>
-                    <h6>{meal.strCategory}</h6>
-                  </div>
-                </div>
-              ))
-            ))}
+          ))
+        )}
       </div>
       <br />
     </>

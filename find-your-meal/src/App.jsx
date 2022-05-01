@@ -24,8 +24,8 @@ function App() {
             <Route path='details/:idMeal' element={<Details />} />
             <Route path='/login' element={<Login />} />
             <Route path='/register' element={<SignUp />} />
-            <Route path='/profile' element={<ProfileInfo />} />
-            <Route path='/profile/likes' element={<ProfileLikes />} />
+            <Route path='/profile/:userId' element={<ProfileInfo />} />
+            <Route path='/profile/likes/:userId' element={<ProfileLikes />} />
             <Route path='/profile/comments' element={<ProfileComments />} />
           </Routes>
         </div>
