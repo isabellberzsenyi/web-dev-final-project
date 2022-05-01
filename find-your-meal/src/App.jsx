@@ -20,7 +20,7 @@ function App() {
           <Routes>
             <Route path='/' element={<Home />} />
             <Route path='search' element={<Search />} />
-            <Route path="search/:searchString" element={<Search />} />
+            <Route path='search/:searchString' element={<Search />} />
             <Route path='details/:idMeal' element={<Details />} />
             <Route path='/login' element={<Login />} />
             <Route path='/register' element={<SignUp />} />

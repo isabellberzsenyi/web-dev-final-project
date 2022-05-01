@@ -39,7 +39,7 @@ function NavBar({ currentPage }) {
           <Link className='my-0 mx-2' to='/profile'>
             Hey {profile.firstName}
           </Link>
-          <button className="btn btn-primary" type='button' onClick={onClickSignOut}>
+          <button className='btn btn-primary' type='button' onClick={onClickSignOut}>
             Sign Out
           </button>
         </div>
