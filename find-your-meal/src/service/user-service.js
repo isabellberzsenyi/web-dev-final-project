@@ -32,7 +32,14 @@ export const checkLoggedIn = async () => {
   return response.data;
 };
 
-export const findUserById = async () => {
-  const response = await api.get(`${USER_API}/findUser`);
+export const updateUser = async (userId, email, password, firstName, lastName, accountType) => {
+  const response = await api.put(`${USER_API}/profile/${userId}`, {
+    userId,
+    email,
+    password,
+    firstName,
+    lastName,
+    accountType,
+  });
   return response.data;
 };
