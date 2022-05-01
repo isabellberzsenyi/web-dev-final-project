@@ -11,8 +11,12 @@ function Login() {
   const passwordRef = useRef();
 
   const onSubmit = async () => {
-    await signin(emailRef.current.value, passwordRef.current.value);
-    navigate('/');
+    try {
+      await signin(emailRef.current.value, passwordRef.current.value);
+      navigate('/');
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   return (
