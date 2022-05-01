@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import NavBar from '../NavBar';
 import ProfileNavBar from './Profile-NavBar';
 import { useProfile } from '../../contexts/profile-context';
 
 function ProfileInfo() {
-  const [signedIn, setSignedIn] = useState(false);
   const { profile } = useProfile();
   const { updateUser } = useProfile();
   // eslint-disable-next-line no-underscore-dangle
@@ -15,18 +14,7 @@ function ProfileInfo() {
   const [email, setEmail] = useState(profile.email);
   const [password, setPassword] = useState(profile.password);
 
-  console.log(signedIn);
-  // eslint-disable-next-line no-underscore-dangle
-  console.log(profile._id);
-
   const onSubmit = async () => {
-    // eslint-disable-next-line no-underscore-dangle
-    console.log(userId);
-    console.log(email);
-    console.log(password);
-    console.log(firstName);
-    console.log(lastName);
-    console.log(accountType);
     // eslint-disable-next-line no-underscore-dangle
     setUserId(profile._id);
     await updateUser(
@@ -39,10 +27,6 @@ function ProfileInfo() {
       accountType,
     );
   };
-
-  useEffect(() => {
-    setSignedIn(!!profile);
-  }, [profile]);
 
   return (
     <>

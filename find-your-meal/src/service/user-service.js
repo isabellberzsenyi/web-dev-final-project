@@ -33,7 +33,6 @@ export const checkLoggedIn = async () => {
 };
 
 export const updateUser = async (userId, email, password, firstName, lastName, accountType) => {
-  console.log('Update', userId);
   const response = await api.put(`${USER_API}/profile/${userId}`, {
     userId,
     email,
