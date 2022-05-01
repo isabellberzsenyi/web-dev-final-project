@@ -24,8 +24,6 @@ function ProfileComments() {
       const { mealId } = userCommentData[i];
       // eslint-disable-next-line no-await-in-loop
       userCommentData[i].meal = await axios.get(`${API_LOOKUP}${mealId}`);
-      console.log(axios.get(`${API_LOOKUP}${mealId}`));
-      console.log(userCommentData[i]);
     }
 
     setUserComments(userCommentData);

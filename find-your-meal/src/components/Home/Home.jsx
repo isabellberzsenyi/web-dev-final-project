@@ -14,6 +14,8 @@ function Home() {
   const API_SEARCH = 'https://www.themealdb.com/api/json/v1/1/search.php?f=';
   const API_LOOKUP = 'https://www.themealdb.com/api/json/v1/1/lookup.php?i=';
 
+  console.log(profile);
+
   const findAllMeals = async () => {
     let allMeals = [];
 

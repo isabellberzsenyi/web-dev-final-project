@@ -32,7 +32,15 @@ export const checkLoggedIn = async () => {
   return response.data;
 };
 
-export const updateUser = async () => {
-  const response = await api.put(`${USER_API}/profile`);
+export const updateUser = async (userId, email, password, firstName, lastName, accountType) => {
+  console.log('Update', userId);
+  const response = await api.put(`${USER_API}/profile/${userId}`, {
+    userId,
+    email,
+    password,
+    firstName,
+    lastName,
+    accountType,
+  });
   return response.data;
 };

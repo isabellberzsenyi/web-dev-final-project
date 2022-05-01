@@ -6,6 +6,39 @@ import { useProfile } from '../../contexts/profile-context';
 function ProfileInfo() {
   const [signedIn, setSignedIn] = useState(false);
   const { profile } = useProfile();
+  const { updateUser } = useProfile();
+  // eslint-disable-next-line no-underscore-dangle
+  const [userId, setUserId] = useState(profile._id);
+  const [accountType, setAccountType] = useState(profile.accountType);
+  const [firstName, setFirstName] = useState(profile.firstName);
+  const [lastName, setLastName] = useState(profile.lastName);
+  const [email, setEmail] = useState(profile.email);
+  const [password, setPassword] = useState(profile.password);
+
+  console.log(signedIn);
+  // eslint-disable-next-line no-underscore-dangle
+  console.log(profile._id);
+
+  const onSubmit = async () => {
+    // eslint-disable-next-line no-underscore-dangle
+    console.log(userId);
+    console.log(email);
+    console.log(password);
+    console.log(firstName);
+    console.log(lastName);
+    console.log(accountType);
+    // eslint-disable-next-line no-underscore-dangle
+    setUserId(profile._id);
+    await updateUser(
+      // eslint-disable-next-line no-underscore-dangle
+      userId,
+      email,
+      password,
+      firstName,
+      lastName,
+      accountType,
+    );
+  };
 
   useEffect(() => {
     setSignedIn(!!profile);
@@ -20,17 +53,14 @@ function ProfileInfo() {
         <div className='fields-container'>
           <div className='form-group'>
             <label htmlFor='firstName' className='form-field my-2'>
-              <p className='form-label'> First Name </p>
-              {!(signedIn && profile) ? (
-                <p>{profile.name}</p>
-              ) : (
-                <input
-                  type='text'
-                  className='form-control pl-2'
-                  id='firstName'
-                  placeholder={profile.firstName}
-                />
-              )}
+              <p className='form-label'> First Name: </p>
+              <input
+                type='text'
+                className='form-control pl-2'
+                id='firstName'
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+              />
             </label>
           </div>
           <div className='form-group'>
@@ -40,7 +70,8 @@ function ProfileInfo() {
                 type='text'
                 className='form-control pl-2'
                 id='lastName'
-                placeholder={profile.lastName}
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
               />
             </label>
           </div>
@@ -51,7 +82,8 @@ function ProfileInfo() {
                 type='email'
                 className='form-control pl-2'
                 id='email'
-                placeholder={profile.email}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
             </label>
           </div>
@@ -62,7 +94,8 @@ function ProfileInfo() {
                 type='password'
                 className='form-control pl-2'
                 id='password'
-                placeholder={profile.password}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
               />
             </label>
           </div>
@@ -76,7 +109,10 @@ function ProfileInfo() {
                   name='accountType'
                   id='accountTypePro'
                   value='Pro'
-                  checked={profile.accountType[0] === 'pro'}
+                  checked={(accountType === 'pro')}
+                  onChange={() => {
+                    setAccountType('pro');
+                  }}
                 />
                 Pro
               </label>
@@ -89,14 +125,17 @@ function ProfileInfo() {
                   name='accountType'
                   id='accountTypeBasic'
                   value='Basic'
-                  checked={profile.accountType[0] === 'basic'}
+                  checked={(accountType === 'basic')}
+                  onChange={() => {
+                    setAccountType('basic');
+                  }}
                 />
                 Basic
               </label>
             </div>
           </div>
         </div>
-        <button type='button' className='btn btn-primary mb-4'>
+        <button type='button' className='btn btn-primary mb-4' onClick={onSubmit}>
           Update
         </button>
       </form>
