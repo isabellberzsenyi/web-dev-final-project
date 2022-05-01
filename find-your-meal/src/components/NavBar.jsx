@@ -30,7 +30,7 @@ function NavBar({ currentPage }) {
         </>
       ) : (
         <div className='d-flex align-items-center'>
-          <p className='my-0 mx-2'>Hey {profile.firstName}</p>
+          <Link className='my-0 mx-2' to='/profile'>Hey {profile.firstName}</Link>
           <button type='button' onClick={() => signout()}>
             Sign Out
           </button>
