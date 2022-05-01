@@ -1,32 +1,50 @@
-import React, { useState } from 'react';
+/* eslint-disable no-underscore-dangle */
+/* eslint-disable no-unused-vars */
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import NavBar from '../NavBar';
 import ProfileNavBar from './Profile-NavBar';
 import { useProfile } from '../../contexts/profile-context';
+import { findUserById } from '../../service/user-service';
 
 function ProfileInfo() {
-  const { profile } = useProfile();
+  const { profile, checkLoggedIn } = useProfile();
   const { updateUser } = useProfile();
-  // eslint-disable-next-line no-underscore-dangle
-  const [userId, setUserId] = useState(profile._id);
-  const [accountType, setAccountType] = useState(profile.accountType);
-  const [firstName, setFirstName] = useState(profile.firstName);
-  const [lastName, setLastName] = useState(profile.lastName);
-  const [email, setEmail] = useState(profile.email);
-  const [password, setPassword] = useState(profile.password);
+  const [isCurrentUser, setIsCurrentUser] = useState(false);
+  const [userInfo, setUserInfo] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    password: '',
+    accountType: [''],
+  });
+  const { userId } = useParams();
+
+  const fetchUserInfoById = async () => {
+    await checkLoggedIn();
+    const searchId = userId || profile._id;
+
+    if (searchId) {
+      const response = await findUserById(searchId);
+      setUserInfo(response);
+      setIsCurrentUser(profile._id === userId);
+    }
+  };
 
   const onSubmit = async () => {
-    // eslint-disable-next-line no-underscore-dangle
-    setUserId(profile._id);
     await updateUser(
-      // eslint-disable-next-line no-underscore-dangle
       userId,
-      email,
-      password,
-      firstName,
-      lastName,
-      accountType,
+      userInfo.email,
+      userInfo.password,
+      userInfo.firstName,
+      userInfo.lastName,
+      userInfo.accountType,
     );
   };
+
+  useEffect(() => {
+    fetchUserInfoById();
+  }, []);
 
   return (
     <>
@@ -42,8 +60,14 @@ function ProfileInfo() {
                 type='text'
                 className='form-control pl-2'
                 id='firstName'
-                value={firstName}
-                onChange={(e) => setFirstName(e.target.value)}
+                value={userInfo.firstName}
+                onChange={(e) => {
+                  setUserInfo({
+                    ...userInfo,
+                    firstName: e.target.value,
+                  });
+                }}
+                disabled={!isCurrentUser}
               />
             </label>
           </div>
@@ -54,35 +78,57 @@ function ProfileInfo() {
                 type='text'
                 className='form-control pl-2'
                 id='lastName'
-                value={lastName}
-                onChange={(e) => setLastName(e.target.value)}
+                value={userInfo.lastName}
+                onChange={(e) => {
+                  setUserInfo({
+                    ...userInfo,
+                    lastName: e.target.value,
+                  });
+                }}
+                disabled={!isCurrentUser}
               />
             </label>
           </div>
-          <div className='form-group'>
-            <label htmlFor='email' className='form-field my-2'>
-              <p className='form-label'> Email </p>
-              <input
-                type='email'
-                className='form-control pl-2'
-                id='email'
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-            </label>
-          </div>
-          <div className='form-group'>
-            <label htmlFor='password' className='form-field my-2'>
-              <p className='form-label'> Password </p>
-              <input
-                type='password'
-                className='form-control pl-2'
-                id='password'
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-            </label>
-          </div>
+          {isCurrentUser && (
+            <>
+              <div className='form-group'>
+                <label htmlFor='email' className='form-field my-2'>
+                  <p className='form-label'> Email </p>
+                  <input
+                    type='email'
+                    className='form-control pl-2'
+                    id='email'
+                    value={userInfo.email}
+                    onChange={(e) => {
+                      setUserInfo({
+                        ...userInfo,
+                        email: e.target.value,
+                      });
+                    }}
+                    disabled={!isCurrentUser}
+                  />
+                </label>
+              </div>
+              <div className='form-group'>
+                <label htmlFor='password' className='form-field my-2'>
+                  <p className='form-label'> Password </p>
+                  <input
+                    type='password'
+                    className='form-control pl-2'
+                    id='password'
+                    value={userInfo.password}
+                    onChange={(e) => {
+                      setUserInfo({
+                        ...userInfo,
+                        password: e.target.value,
+                      });
+                    }}
+                    disabled={!isCurrentUser}
+                  />
+                </label>
+              </div>
+            </>
+          )}
           <div className='d-flex flex-row my-2'>
             <p style={{ width: '40%' }}>Account type:</p>
             <div className='form-check form-check-inline'>
@@ -93,10 +139,14 @@ function ProfileInfo() {
                   name='accountType'
                   id='accountTypePro'
                   value='Pro'
-                  checked={accountType[0] === 'pro'}
-                  onChange={() => {
-                    setAccountType(['pro']);
+                  checked={userInfo.accountType[0] === 'pro'}
+                  onChange={(_) => {
+                    setUserInfo({
+                      ...userInfo,
+                      accountType: ['pro'],
+                    });
                   }}
+                  disabled={!isCurrentUser}
                 />
                 Pro
               </label>
@@ -109,19 +159,25 @@ function ProfileInfo() {
                   name='accountType'
                   id='accountTypeBasic'
                   value='Basic'
-                  checked={accountType[0] === 'basic'}
-                  onChange={() => {
-                    setAccountType(['basic']);
+                  checked={userInfo.accountType[0] === 'basic'}
+                  onChange={(_) => {
+                    setUserInfo({
+                      ...userInfo,
+                      accountType: ['basic'],
+                    });
                   }}
+                  disabled={!isCurrentUser}
                 />
                 Basic
               </label>
             </div>
           </div>
         </div>
-        <button type='button' className='btn btn-primary mb-4' onClick={onSubmit}>
-          Update
-        </button>
+        {isCurrentUser && (
+          <button type='button' className='btn btn-primary mb-4' onClick={onSubmit}>
+            Update
+          </button>
+        )}
       </form>
     </>
   );

@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useProfile } from '../contexts/profile-context';
@@ -36,8 +37,8 @@ function NavBar({ currentPage }) {
         </>
       ) : (
         <div className='d-flex align-items-center'>
-          <Link className='my-0 mx-2' to='/profile'>
-            Hey {profile.firstName}
+          <Link className='my-0 mx-2' to={`/profile/${profile._id}`}>
+            Hey {profile.firstName} (Profile)
           </Link>
           <button className='btn btn-primary' type='button' onClick={onClickSignOut}>
             Sign Out

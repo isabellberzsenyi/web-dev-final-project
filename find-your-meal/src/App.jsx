@@ -25,8 +25,9 @@ function App() {
             <Route path='/login' element={<Login />} />
             <Route path='/register' element={<SignUp />} />
             <Route path='/profile' element={<ProfileInfo />} />
-            <Route path='/profile/likes' element={<ProfileLikes />} />
-            <Route path='/profile/comments' element={<ProfileComments />} />
+            <Route path='/profile/:userId' element={<ProfileInfo />} />
+            <Route path='/profile/likes/:userId' element={<ProfileLikes />} />
+            <Route path='/profile/comments/:userId' element={<ProfileComments />} />
           </Routes>
         </div>
       </BrowserRouter>
