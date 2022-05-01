@@ -35,15 +35,9 @@ function NavBar({ currentPage }) {
               Hey {profile.firstName}
             </button>
             <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <Link className={linkClassName('profile')} to='/profile'>
+              <button className="dropdown-item" type="button">
                 Profile
-              </Link>
-              <Link className={linkClassName('likes')} to='/profile/likes'>
-                Your Likes
-              </Link>
-              <Link className={linkClassName('comments')} to='/profile/comments'>
-                Your Comments
-              </Link>
+              </button>
             </div>
           </div>
           <button className="btn btn-primary" type='button' onClick={() => signout()}>

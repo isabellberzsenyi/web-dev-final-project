@@ -35,4 +35,4 @@ export const checkLoggedIn = async () => {
 export const findUserById = async () => {
   const response = await api.get(`${USER_API}/findUser`);
   return response.data;
-}
+};
