@@ -16,7 +16,7 @@ export function ProfileProvider({ children }) {
       const data = await userService.signin(email, password);
       setProfile(data);
     } catch (e) {
-      console.log(e);
+      throw Error('error!');
     }
   };
 

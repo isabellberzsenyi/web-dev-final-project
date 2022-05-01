@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useProfile } from '../contexts/profile-context';
 
 function NavBar({ currentPage }) {
+  const navigate = useNavigate();
   const [signedIn, setSignedIn] = useState(false);
   const linkClassName = (page) => `nav-link p-2 ${currentPage === page ? 'active' : ''}`;
   const { profile, signout } = useProfile();
@@ -10,6 +11,11 @@ function NavBar({ currentPage }) {
   useEffect(() => {
     setSignedIn(!!profile);
   }, [profile]);
+
+  const onClickSignOut = async () => {
+    await signout();
+    navigate('/');
+  };
 
   return (
     <nav className='nav nav-tabs d-flex'>
@@ -30,8 +36,10 @@ function NavBar({ currentPage }) {
         </>
       ) : (
         <div className='d-flex align-items-center'>
-          <Link className='my-0 mx-2' to='/profile'>Hey {profile.firstName}</Link>
-          <button type='button' onClick={() => signout()}>
+          <Link className='my-0 mx-2' to='/profile'>
+            Hey {profile.firstName}
+          </Link>
+          <button type='button' onClick={onClickSignOut}>
             Sign Out
           </button>
         </div>
