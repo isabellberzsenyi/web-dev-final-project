@@ -6,6 +6,7 @@ import { useProfile } from '../contexts/profile-context';
 import * as likeService from '../service/like-service';
 import * as commentService from '../service/comments-service';
 import NavBar from './NavBar';
+// import { findUserById } from '../service/user-service';
 // import { createComment } from "../actions/comment-actions.js";
 
 function Details() {
@@ -66,14 +67,7 @@ function Details() {
 
     // eslint-disable-next-line no-underscore-dangle
     mealCommentData = await commentService.getMealComments(idMeal);
-
-    // eslint-disable-next-line no-plusplus
-    //     for (let i = 0; i < mealCommentData.length; i++) {
-    //       const { mealId } = mealCommentData[i];
-    //       // eslint-disable-next-line no-await-in-loop
-    //       userCommentData[i].meal = await axios.get(`${API_LOOKUP}${mealId}`);
-    //     }
-
+    console.log(mealCommentData);
     setMealComments(mealCommentData);
   };
 
@@ -87,6 +81,10 @@ function Details() {
     );
     setMealComments([...mealComments, actualComment]);
   };
+
+  //   const getCommentUser = async (commentId) => {
+  //     await findUserById(commentId);
+  //   }
 
   //   let [postComment, setPostComment] = useState('');
   //   const dispatch = useDispatch();
@@ -117,10 +115,6 @@ function Details() {
   useEffect(() => {
     getTotalLikes();
   }, [currLikes]);
-
-  //   useEffect(() => {
-  //     handleLikes();
-  //   }, [userLike]);
 
   useEffect(() => {
     findMealComments();
@@ -218,7 +212,7 @@ function Details() {
           </div>
           <ul className="list-group">
             {
-              mealComments.map && mealComments.map((comment) => <li className="list-group-item mb-2"> <p className="fw-bold">{comment.userId}</p> <p>{comment.comment}</p> </li>)
+              mealComments.map && mealComments.map((comment) => <li className="list-group-item mb-2"> <p className="fw-bold">{comment.firstName} {comment.lastName}</p> <p>{comment.comment}</p> </li>)
             }
           </ul>
         </div>
