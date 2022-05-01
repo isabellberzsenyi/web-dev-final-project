@@ -46,8 +46,7 @@ function NavBar({ currentPage }) {
               </Link>
             </div>
           </div>
-          <p className='my-0 mx-2'>Hey {profile.firstName}</p>
-          <button type='button' onClick={() => signout()}>
+          <button className="btn btn-primary" type='button' onClick={() => signout()}>
             Sign Out
           </button>
         </div>

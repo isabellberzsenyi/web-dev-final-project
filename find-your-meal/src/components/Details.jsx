@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 // import {useDispatch} from "react-redux";
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
@@ -79,10 +79,14 @@ function Details() {
 
   const commentRef = useRef();
   const handleComment = async () => {
-    // eslint-disable-next-line no-underscore-dangle
-    const actualComment = await commentService.createComment(idMeal, profile._id, commentRef.current.value);
-    setMealComments([...mealComments, actualComments]);
-  }
+    const actualComment = await commentService.createComment(
+      idMeal,
+      // eslint-disable-next-line no-underscore-dangle
+      profile._id,
+      commentRef.current.value,
+    );
+    setMealComments([...mealComments, actualComment]);
+  };
 
   //   let [postComment, setPostComment] = useState('');
   //   const dispatch = useDispatch();
@@ -108,6 +112,7 @@ function Details() {
 
   useEffect(() => {
     setSignedIn(!!profile);
+    console.log(profile);
   }, [profile]);
 
   useEffect(() => {
@@ -153,8 +158,7 @@ function Details() {
                 <button type="button" className="btn btn-secondary text-primary ms-5" onClick={() => navigate('/register')}> Register Now.</button>
               </div>
             ) : (
-              <div className="mt-2 mb-2">
-                <br />
+              <div className="mb-2">
                 <button type="button" onClick={handleLikes} className="btn btn-primary fw-bold text-black ms-5 mb-3">
                   {
                     userLike && <i className="fas fa-heart text-info" />
@@ -164,6 +168,7 @@ function Details() {
                   }
                   { currLikes }
                 </button>
+                <br />
                 <span className="text-secondary fst-italic ms-5">Love this meal? Click the heart above to like it!</span>
               </div>
             )}
@@ -195,7 +200,7 @@ function Details() {
           <div className="card-header">
             <h5>Write a comment</h5>
             <div className="d-flex flex-column ms-2 me-2 pb-2">
-              {(profile.accountType.type !== 'pro') ? (
+              {(profile && profile.accountType[0] !== 'pro') ? (
                 <div>
                   <textarea disabled className="form-control" value="Want to be able to leave comments on your favorite meals? Upgrade to a Pro account by using the link below!" />
                   <button type='button' className='btn btn-link' onClick={() => navigate('/profile')}>
@@ -204,8 +209,8 @@ function Details() {
                 </div>
               ) : (
                 <div>
-                  <textarea ref={commentRef} className="form-control"></textarea>
-                  <button onClick={handleComment} type="button" className="btn btn-primary">
+                  <textarea ref={commentRef} className="form-control mb-1" placeholder="Let us know what you think!" />
+                  <button onClick={handleComment} type="button" className="btn btn-primary w-100">
                     Post
                   </button>
                 </div>
