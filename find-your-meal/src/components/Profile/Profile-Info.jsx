@@ -109,9 +109,9 @@ function ProfileInfo() {
                   name='accountType'
                   id='accountTypePro'
                   value='Pro'
-                  checked={(accountType === 'pro')}
+                  checked={accountType[0] === 'pro'}
                   onChange={() => {
-                    setAccountType('pro');
+                    setAccountType(['pro']);
                   }}
                 />
                 Pro
@@ -125,9 +125,9 @@ function ProfileInfo() {
                   name='accountType'
                   id='accountTypeBasic'
                   value='Basic'
-                  checked={(accountType === 'basic')}
+                  checked={accountType[0] === 'basic'}
                   onChange={() => {
-                    setAccountType('basic');
+                    setAccountType(['basic']);
                   }}
                 />
                 Basic

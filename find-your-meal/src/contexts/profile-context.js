@@ -38,9 +38,16 @@ export function ProfileProvider({ children }) {
     }
   };
 
-  const updateUser = async () => {
+  const updateUser = async (userId, email, password, firstName, lastName, accountType) => {
     try {
-      const data = await userService.updateUser();
+      const data = await userService.updateUser(
+        userId,
+        email,
+        password,
+        firstName,
+        lastName,
+        accountType,
+      );
       setProfile(data);
     } catch (e) {
       console.log(e);
