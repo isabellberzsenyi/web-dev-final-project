@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import NavBar from './NavBar';
 import './login.css';
@@ -6,6 +6,7 @@ import { useProfile } from '../contexts/profile-context';
 
 function Login() {
   const navigate = useNavigate();
+  const [error, setError] = useState('');
   const { signin } = useProfile();
   const emailRef = useRef();
   const passwordRef = useRef();
@@ -13,9 +14,10 @@ function Login() {
   const onSubmit = async () => {
     try {
       await signin(emailRef.current.value, passwordRef.current.value);
+      setError('');
       navigate('/');
     } catch (e) {
-      console.log(e);
+      setError('Error logging in try again');
     }
   };
 
@@ -58,6 +60,7 @@ function Login() {
       <button type='button' className='btn btn-link' onClick={() => navigate('/register')}>
         Not a user? Register now.
       </button>
+      <p style={{ color: 'red' }}>{error}</p>
     </div>
   );
 }
