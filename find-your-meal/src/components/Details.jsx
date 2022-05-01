@@ -47,7 +47,7 @@ function Details() {
 
   const [currLikes, setCurrLikes] = useState(0);
   const getTotalLikes = async () => {
-    const likes = await likeService.getMealLikes({ idMeal });
+    const likes = await likeService.getMealLikes(idMeal);
     setCurrLikes(likes.length);
   };
 
