@@ -31,3 +31,8 @@ export const checkLoggedIn = async () => {
   const response = await api.get(`${USER_API}/profile`);
   return response.data;
 };
+
+export const findUserById = async () => {
+  const response = await api.get(`${USER_API}/findUser`);
+  return response.data;
+}

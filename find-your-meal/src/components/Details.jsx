@@ -53,7 +53,7 @@ function Details() {
 
   const [userLike, setUserLike] = useState([]);
   const handleLikes = async () => {
-    const mealId = { idMeal };
+    const mealId = idMeal;
     // eslint-disable-next-line no-underscore-dangle
     const userId = profile._id;
     const response = await likeService.toggleLikeMeal(mealId, userId);
@@ -112,7 +112,6 @@ function Details() {
 
   useEffect(() => {
     setSignedIn(!!profile);
-    console.log(profile);
   }, [profile]);
 
   useEffect(() => {
@@ -166,7 +165,7 @@ function Details() {
                   {
                     !userLike && <i className="far fa-heart text-info" />
                   }
-                  { currLikes }
+                  <span> { currLikes }</span>
                 </button>
                 <br />
                 <span className="text-secondary fst-italic ms-5">Love this meal? Click the heart above to like it!</span>
