@@ -45,8 +45,6 @@ export const updateUser = async (userId, email, password, firstName, lastName, a
 };
 
 export const findUserById = async (userId) => {
-  console.log({ userId });
   const response = await api.get(`${USER_API}/findUser/${userId}`);
-  console.log({ response });
   return response.data;
 };

@@ -1,16 +1,16 @@
-/* eslint-disable no-underscore-dangle */
-/* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import NavBar from '../NavBar';
 import ProfileNavBar from './Profile-NavBar';
 import { useProfile } from '../../contexts/profile-context';
 import { findUserById } from '../../service/user-service';
 
 function ProfileInfo() {
+  const navigate = useNavigate();
   const { profile, checkLoggedIn } = useProfile();
   const { updateUser } = useProfile();
-  const [isCurrentUser, setIsCurrentUser] = useState(false);
+  const [currentProfile, setCurrentProfile] = useState(profile);
+  const [isCurrentUser, _setIsCurrentUser] = useState(false);
   const [userInfo, setUserInfo] = useState({
     firstName: '',
     lastName: '',
@@ -20,14 +20,22 @@ function ProfileInfo() {
   });
   const { userId } = useParams();
 
+  const setIsCurrentUser = () => {
+    if (userId) {
+      _setIsCurrentUser(currentProfile._id === userId);
+    } else {
+      _setIsCurrentUser(!!currentProfile);
+    }
+  };
+
   const fetchUserInfoById = async () => {
     await checkLoggedIn();
-    const searchId = userId || profile._id;
+    const searchId = userId || currentProfile._id;
 
     if (searchId) {
       const response = await findUserById(searchId);
       setUserInfo(response);
-      setIsCurrentUser(profile._id === userId);
+      setIsCurrentUser();
     }
   };
 
@@ -43,8 +51,9 @@ function ProfileInfo() {
   };
 
   useEffect(() => {
+    setCurrentProfile(profile);
     fetchUserInfoById();
-  }, []);
+  }, [profile]);
 
   return (
     <>
@@ -179,6 +188,7 @@ function ProfileInfo() {
           </button>
         )}
       </form>
+      ;
     </>
   );
 }

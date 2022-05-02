@@ -1,8 +1,4 @@
-/* eslint-disable implicit-arrow-linebreak */
-/* eslint-disable no-underscore-dangle */
-/* eslint-disable operator-linebreak */
 import React, { useEffect, useState, useRef } from 'react';
-// import {useDispatch} from "react-redux";
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useProfile } from '../contexts/profile-context';
@@ -40,17 +36,14 @@ function Details() {
   const getTotalLikes = async () => {
     const likes = await likeService.getMealLikes(idMeal);
     const userIdLikes = likes.map((l) => l.userId);
-    console.log({ userIdLikes });
     setCurrLikes(userIdLikes);
     setUserLike(profile && currLikes.includes(profile._id));
   };
 
   const handleLikes = async () => {
-    console.log('herer');
     const mealId = idMeal;
     const userId = profile._id;
     const response = await likeService.toggleLikeMeal(mealId, userId);
-    console.log(response, !!response.data);
     setUserLike(!!response.data);
   };
 
